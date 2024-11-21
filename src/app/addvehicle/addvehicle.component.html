@@ -1,0 +1,44 @@
+<form class="vehicle-form">
+  <div class="form-group">
+    <label for="vehicleType">Vehicle Type</label>
+    <select id="vehicleType" [(ngModel)]="selectedVehicle" name="vehicleType" (change)="onVehicleChange()">
+      <option value="car">Car</option>
+      <option value="scooter">Scooter/Bike</option>
+      <option value="bicycle">Bicycle</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="quantity">Quantity</label>
+    <input type="number" id="quantity" name="quantity" min="1" [(ngModel)]="quantity">
+  </div>
+
+  <div *ngIf="selectedVehicle === 'car' || selectedVehicle === 'scooter'" class="form-group">
+    <label for="brandName">Brand Name</label>
+    <input type="text" id="brandName" name="brandName" [(ngModel)]="brandName">
+
+    <label for="model">Model</label>
+    <input type="text" id="model" name="model" [(ngModel)]="model">
+  </div>
+
+  <div *ngIf="selectedVehicle === 'car' || selectedVehicle === 'scooter' || selectedVehicle === 'bicycle'" class="form-group">
+    <label for="businessRegistration">Add Photo</label>
+    <input type="file" id="businessRegistration" name="businessRegistration" [(ngModel)]="businessRegistration">
+  </div>
+
+  <!-- Price Row -->
+  <div class="form-group">
+    <label for="price">Price</label>
+    <input type="number" id="price" name="price" min="0" [(ngModel)]="price">
+
+    <label for="pricePeriod">Period</label>
+    <select id="pricePeriod" [(ngModel)]="pricePeriod" name="pricePeriod">
+      <option value="hourly">Hourly</option>
+      <option value="daily">Daily</option>
+      <option value="monthly">Monthly</option>
+    </select>
+  </div>
+
+  <!-- Submit Button -->
+  <button type="submit" routerLink="/dashboard">Submit</button>
+</form>

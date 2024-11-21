@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehicle Rental Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome for Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <!-- Chart.js for charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom CSS for Primary Color and Enhancements -->
+  <style>
+  
+    /* Sidebar */
+    .sidebar {
+      background-color: var(--primary-color);
+    }
+
+    .sidebar .nav-link {
+      color: white;
+    }
+
+    .sidebar .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar .nav-link i {
+      color: white;
+    }
+
+    /* Header Color */
+    .card-header {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    /* Custom Card Body for Primary Color */
+    .card-body.bg-info, 
+    .card-body.bg-success, 
+    .card-body.bg-warning, 
+    .card-body.bg-danger {
+      background-color: var(--primary-color);
+    }
+
+    .card-body.bg-info, 
+    .card-body.bg-success, 
+    .card-body.bg-warning, 
+    .card-body.bg-danger h4 {
+      color: white;
+    }
+
+    /* Custom Badge Colors */
+    .badge.bg-success {
+      
+      background-color: #28a745;
+    }
+
+    .badge.bg-warning {
+      background-color: #ffc107;
+      color: black;
+    }
+
+    .badge.bg-danger {
+      background-color: #dc3545;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <nav class="col-md-2 bg-dark text-white vh-100 sidebar d-flex flex-column p-3 position-fixed">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link text-white"  routerLink="/dashboard"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" routerLink="/booking"><i class="fas fa-calendar-check me-2"></i> Booking</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white"routerLink="/vehicle" ><i class="fas fa-car me-2"></i> Vehicles</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" routerLink="/businessnotification"><i class="fas fa-bell me-2"></i> Notifications</a>
+          </li>
+        </ul>
+      </nav>
+  
+      <!-- Main Content -->
+      <main class="col-md-10 ms-auto p-4 offset-md-2">
+        <!-- Metrics Section -->
+        <div class="row g-4 mb-4">
+          <div class="col-md-4">
+            <div class="card text-center shadow-sm" style="height: 150px;">
+              <div class="card-body bg-info text-white d-flex flex-column justify-content-center">
+                <h6><i class="fas fa-car"></i> Total vehicle</h6>
+                <h4>10,230</h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card text-center shadow-sm" style="height: 150px;">
+              <div class="card-body bg-success text-white d-flex flex-column justify-content-center">
+                <h6><i class="fas fa-clipboard-check"></i> Available vehicle</h6>
+                <h4>120</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+  
+        <!-- Charts Section -->
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5>Available Vehicle</h5>
+                <canvas id="rentalTrendsChart"></canvas>
+              </div>
+            </div>
+            
+            
+  
+          </div>
+          <div class="col-md-6 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h5>Vehicle Utilization</h5>
+                <canvas id="vehicleUtilizationChart"></canvas>
+              </div>
+            </div>
+         
+          </div>
+        </div>
+        
+      </main>
+        <!-- Available Vehicles -->
+
+    </div>
+     <!-- Available Vehicles Section -->
+    <section class="available-vehicles">
+      <h2>Available Vehicles</h2>
+      <div class="vehicle-list">
+        <!-- Repeat Vehicle Cards -->
+        <div class="vehicle-card">
+          <img src="../assets/images/car.png" alt="Car" />
+          <h3>Car</h3>
+          <div class="vehicle-info">
+            <p>Quantity: 15</p>
+            <p>Available: 9</p>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <img src="../assets/images/bike.png" alt="Scooter" />
+          <h3>Scooter</h3>
+          <div class="vehicle-info">
+            <p>Quantity: 20</p>
+            <p>Available: 12</p>
+          </div>
+        </div>
+        <div class="vehicle-card">
+          <img src="../assets/images/bicycle.png" alt="Bicycle" />
+          <h3>Bicycle</h3>
+          <div class="vehicle-info">
+            <p>Quantity: 25</p>
+            <p>Available: 18</p>
+          </div>
+        </div>
+      </div>
+      <div class="action-buttons">
+        <button class="view-more" routerLink="/vehicle">View More</button>
+        <button class="add-more" routerLink="/addvehicle">Add More</button>
+      </div>
+    </section>
+
+  </div>
+
+
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+<router-outlet></router-outlet>

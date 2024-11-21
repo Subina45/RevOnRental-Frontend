@@ -1,0 +1,63 @@
+/* Sidebar styles */
+.sidebar {
+    margin-top: 8vh;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 16.6667%; /* Matches col-md-2 */
+    background-color: #343a40;
+  }
+  .nav {
+    margin-top: 8vh; /* Adjust spacing for navigation items */
+  }
+  
+  .nav-link {
+    margin-bottom: 10px;
+  }
+  .sidebar .nav-link {
+    color: white;
+  }
+  
+  .sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .sidebar .nav-link i {
+    color: white;
+  }
+  
+  /* Main content styles */
+  .main-content {
+    margin-top: 6vh;
+    margin-left: 260px; /* Matches the sidebar width */
+    padding: 20px;
+  }
+
+  
+  /* Notification card styles */
+  .notification-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    margin-left: 10vh;
+    transition: transform 0.2s;
+  }
+  
+  .notification-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .notification-icon {
+    font-size: 2rem;
+  }
+  
+  .timestamp {
+    font-size: 0.85rem;
+    color: gray;
+  }
+  
+  /* Adjust margin for the main content */
+  h1 {
+    margin-top: 20px;
+  }
+  

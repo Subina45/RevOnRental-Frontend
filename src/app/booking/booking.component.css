@@ -1,0 +1,33 @@
+.row {
+  margin-top: 8vh; /* Remove margin that misaligns the layout */
+}
+
+.sidebar {
+  margin-top: 8vh;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 16.6667%; /* Matches col-md-2 */
+  background-color: #343a40;
+}
+
+.nav {
+  margin-top: 8vh; /* Adjust spacing for navigation items */
+}
+
+.nav-link {
+  margin-bottom: 10px;
+}
+
+.table img {
+  border-radius: 5px;
+}
+
+.badge {
+  padding: 0.4em;
+}
+
+.container {
+  margin-left: 18%; /* Offset the sidebar width */
+}

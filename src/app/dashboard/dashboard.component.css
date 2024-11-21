@@ -1,0 +1,202 @@
+.row{
+  margin-top: 0;
+}
+.nav{
+  margin-top: 9vh;
+  height:300vh;
+}
+/* .sidebar {
+  min-height: 130vh;
+} */
+.sidebar {
+  background-color: var(--primary-color);
+  min-height: 100vh;
+  padding: 1rem 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  color: white;
+}
+
+.main-content {
+  margin-left: 240px;
+  padding: 2rem;
+}
+#rentalTrendsChart {
+  max-width: 350px; /* Set the maximum width of the chart */
+  max-height: 270px; /* Set the maximum height of the chart */
+  margin: 0 auto; /* Center the chart within the container */
+  display: block; /* Ensure proper centering */
+}
+
+
+    /* Available Vehicles Section */
+    /* .available-vehicles {
+      margin-left: 90vh;
+    }
+
+    .available-vehicles h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+
+    .vehicle-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .vehicle-card {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      width: s
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .vehicle-card img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 1rem;
+    }
+
+    .vehicle-card h3 {
+      font-size: 1.2rem;
+      color: var(--primary-color);
+    }
+
+    .vehicle-info p {
+      margin: 0.5rem 0;
+      font-size: 1rem;
+    }
+
+    .action-buttons {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .view-more, .add-more {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .view-more:hover, .add-more:hover {
+      background-color: #574dcc;
+    } */
+
+
+
+
+/* .available-vehicles,
+.recent-bookings,
+.notifications {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+} */
+
+.available-vehicles h2,
+.recent-bookings h2,
+.notifications h2 {
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+
+.available-vehicles {
+  margin-top: 20px;
+  margin-left:30vh ;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.available-vehicles p{
+  font-size: 20px;
+  
+}
+
+.vehicle-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: space-between;
+}
+
+.vehicle-card {
+  background: #f4f4f4;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  flex: 0 1 calc(25% - 20px);
+}
+
+.vehicle-card img {
+  max-width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.vehicle-info {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.vehicle-info span {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.vehicle-card h3 {
+  font-size: 2rem;
+  margin-bottom: 5px;
+  color: var(--primary-color);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.action-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+
+.view-more{
+  background-color: var(--primary-color);
+  color: white;
+}
+.add-more {
+  background-color: #28a745;
+  color: white;
+}
+
+.action-buttons button:hover {
+  opacity: 0.8;
+}
+

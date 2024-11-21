@@ -1,0 +1,74 @@
+:root {
+  --text-color:#0B2154 ;
+  --primary-color: #863884; /* Deep purple */
+  --secondary-color: #6A1B9A; /* Light purple */
+}
+.nav{
+  margin-top: 8vh;
+  height:300vh;
+}
+/* .sidebar {
+  min-height: 130vh;
+} */
+.sidebar {
+  height: 100%;
+}
+.container {
+  margin-top: 8vh;
+  margin-left: 18%;
+}
+
+h2{
+  font-size: 40px;
+  margin-top: 8vh;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.vehicle-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.vehicle-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.small-img {
+  height: 120px;
+  object-fit: contain;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.availability-text {
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+/* add to inventry  */
+.btn-success {
+  height: 40px;
+  margin-left: 142vh; /* Added spacing for "Add a New Car to Inventory" */
+}
+
+.section-title {
+  color: #333;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+/* Remove Border Color */
+.btn-primary {
+  background-color: var(--primary-color); /* Replace with your desired background color */
+  border: none; /* Removes the border */
+  color: #fff; /* Button text color */
+  transition: background-color 0.3s ease;
+}
+
+/* Hover State */
+.btn-primary:hover {
+  background-color: var(--secondary-color); /* Replace with your desired hover color */
+}
