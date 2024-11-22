@@ -35,26 +35,28 @@ export class LoginComponent {
 
   onLogin() {
     console.log('Login Object:', this.loginObj);
-
-    this.authService.loginUser(this.loginObj).subscribe({
-      next: (res) => {
+    this.authService.loginUser(this.loginObj).subscribe((res:any)=>{
+      if(res){
+        debugger;
         console.log('Login successful', res);
-
-        // Assuming the token is returned in `res.token`
-      const token = res.token;
-      if (token) {
-        this.authService.setToken(token); // Save the token
+        this.authService.setToken(res.accessToken);
         this.loginStateService.setLoginStatus(true); // Update login status
-        this.router.navigate(['/search']); // Navigate after login
-      } else {
-        alert('Token not received. Please try again.');
+        this.router.navigate(['/search']); 
+        // const role=this.authService.getLoggedInRole();
+        // if(role==='user'){
+        //   this.router.navigate(['/search']); // Navigate after login
+        // }else if(role==='business'){
+        //   this.router.navigate(['/dashboard']); // Navigate after login
+
+        // }
       }
+
     },
-    error: (err) => {
+    (err) => {
       console.error('Login failed', err);
       alert('Invalid email or password.');
-    }
-  });
+   });
+    
     //     // Set the login status to true
     //     this.loginStateService.setLoginStatus(true);
     //     // Navigate to the search page after successful login

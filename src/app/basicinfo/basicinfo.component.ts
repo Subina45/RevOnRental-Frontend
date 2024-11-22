@@ -118,32 +118,13 @@ export class BasicinfoComponent {
   }
 
   onSubmit(): void {
-
-    // Ensure required files are selected
-    // if (!this.businessData.nationalIdFront || !this.businessData.nationalIdBack || (this.businessType === 'company' && !this.businessData.businessRegistrationDocument)) {
-    //   alert('Please upload all required documents before submitting the form.');
-    //   return;
-    // }
-
-    // Create a new FormData instance
     console.log('Business Data before submission:', this.businessData);
-    const formData: FormData = new FormData();
-
-
-    // Append individual fields from the businessData object to formData
-    formData.append('firstName', this.businessData.firstName);
-    formData.append('lastName', this.businessData.lastName);
-    formData.append('email', this.businessData.email);
-    formData.append('password', this.businessData.password);
-    formData.append('contactNumber', this.businessData.contactNumber);
-    formData.append('address', this.businessData.address);
-    formData.append('latitude', this.businessData.latitude.toString());
-    formData.append('longitude', this.businessData.longitude.toString());
-
-
-
+  
+    const formData = new FormData();
+  
+    // Append individual or company data
     if (this.businessData.businessType === 0) {
-      // Individual Type append national ID and bluebook files
+      // Individual Type
       if (this.businessData.nationalIdFront) {
         formData.append('nationalIdFront', this.businessData.nationalIdFront);
       }
@@ -154,24 +135,31 @@ export class BasicinfoComponent {
         formData.append('bluebook', this.businessData.bluebook);
       }
     } else if (this.businessData.businessType === 1) {
-      // Company Type append business-specific data
+      // Company Type
       formData.append('businessName', this.businessData.businessName);
       formData.append('businessRegistrationNumber', this.businessData.businessRegistrationNumber);
       if (this.businessData.businessRegistrationDocument) {
         formData.append('businessRegistrationDocument', this.businessData.businessRegistrationDocument);
       }
     }
-    // Submit the form data using the AuthService
-    this.authService.createBusiness(formData).subscribe({
-      next: (res) => {
-        console.log('Business registered successfully', res);
-        this.router.navigate(['/dashboard']);
+  
+    formData.append('firstName', this.businessData.firstName);
+    formData.append('lastName', this.businessData.lastName);
+    formData.append('email', this.businessData.email);
+    formData.append('password', this.businessData.password);
+    formData.append('contactNumber', this.businessData.contactNumber);
+    formData.append('address', this.businessData.address);
+    formData.append('latitude', this.businessData.latitude);
+    formData.append('longitude', this.businessData.longitude);
 
-      },
-      error: (err) => {
-        console.error('Failed to register business', err);
-      }
-    }
-    );
+  
+    // Submit the form data
+    this.authService.createBusiness(formData).subscribe((res:any)=>{
+      console.log('Business registered successfully', res);
+      this.router.navigate(['/login']);
+    },(err) => {
+      console.error('Failed to register business', err);
+    })
+    
   }
 }

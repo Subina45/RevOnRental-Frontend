@@ -87,9 +87,7 @@ export class UsersignupComponent {
     if (query.length > 2) {
       const apiUrl = `https://nominatim.openstreetmap.org/search?q=${query}+pokhara&format=json&addressdetails=1&limit=5`;
       this.http.get(apiUrl).subscribe((response: any) => {
-        this.ngZone.run(() => {
-          this.suggestions = response;
-        });
+        this.suggestions = response;
       });
     } else {
       this.suggestions = [];
@@ -138,32 +136,15 @@ export class UsersignupComponent {
     }
   }
   onSignUp() {
-
     //this line to inspect the signup object before making the API call
     console.log('Signup Object:', this.signupObj);
 
-    this.authsrv.createUser(this.signupObj).subscribe({
-      next: (res) => {
-
-        console.log('Signup successful', res);
-        // Navigate to the search page after successful signup
-        this.router.navigate(['/login']);
-        // Attempting to navigate to the login page
-        this.ngZone.run(() => {
-          this.router.navigate(['/login']).then(() => {
-            console.log('Navigation successful');
-          }).catch(err => {
-            console.error('Navigation failed:', err);
-          });
-        });
-
-      },
-      // error: (err) => {
-      //   console.error('Signup failed', err);
-      //   // Show an error message to the user
-      // }
-      error: (err) => {
-        console.error('Signup failed', err);
+    this.authsrv.createUser(this.signupObj).subscribe((res: any) => {
+      console.log('Signup successful', res);
+      this.router.navigate(['/login']);
+    },
+     (err) => {
+      console.error('Signup failed', err);
         if (err.status === 400) {
           this.validationErrors = [];
           if (err.error) {
@@ -179,8 +160,8 @@ export class UsersignupComponent {
           console.error('Unexpected error:', err);
           this.validationErrors = ['An unexpected error occurred. Please try again later.'];
         }
-      }
     });
+    
   }
 
 }

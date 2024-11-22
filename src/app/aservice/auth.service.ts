@@ -1,6 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import * as jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +10,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
 
   private readonly tokenKey = 'authToken'; // Key to store token in localStorage
-  private readonly apiUrl = 'http://localhost:5199/api/Auth'; // Base API URL
-
+  private readonly apiUrl = environment.API_URL; // Base API URL
   constructor(private http: HttpClient) { }
 
    // Save token in localStorage
@@ -27,43 +28,38 @@ export class AuthService {
     localStorage.removeItem(this.tokenKey);
   }
 
+  // This is to decode JWT token
+  decodeToken() {
+    const token = this.getToken();
+    if (token) {
+      return jwt_decode(token);
+
+    }
+}
+
+getLoggedInRole(){
+  const token=this.decodeToken();
+  if(token){
+    return token.role().toLowerCase();
+  }
+}
+
   // Check if the user is authenticated
   isAuthenticated(): boolean {
     return !!this.getToken(); // Returns true if token exists
   }
 
   createUser(signupObj:any): Observable<any>{
-    return this.http.post(`${this.apiUrl}/register/user`,signupObj,{
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      }),
-      responseType: 'text' // to handle non-JSON responses (Expecting text response from the server)
-    })
+    return this.http.post(`${this.apiUrl}/auth/register/user`,signupObj)
   }
 
   loginUser(loginObj:any): Observable<any>{
-    return this.http.post(`${this.apiUrl}/login`,loginObj,{
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      }),
-      responseType: 'json'
-
-    })
+    return this.http.post(`${this.apiUrl}/auth/login`,loginObj)
   }
 
 
-  createBusiness(businessData:FormData): Observable<any>{
-
-    return this.http.post(`${this.apiUrl}/register/business`,businessData,{
-      // headers: new HttpHeaders({
-      //   // 'Content-Type': 'application/json'
-      //   responseType: 'json'
-      // }),
-      
-
-    });
-   
-  
+  createBusiness(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/register/business`, formData);
   }
 }
 
