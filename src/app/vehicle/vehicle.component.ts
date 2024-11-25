@@ -18,6 +18,7 @@ import { AddvehicleComponent } from '../addvehicle/addvehicle.component';
 import { ViewdetailpopupComponent } from "../viewdetailpopup/viewdetailpopup.component";
 import { UpdatedeleteComponent } from '../updatedelete/updatedelete.component';
 // import { AddvehicleComponent } from "../addvehicle/addvehicle.component";
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-vehicle',
@@ -105,4 +106,52 @@ import { UpdatedeleteComponent } from '../updatedelete/updatedelete.component';
       this.showModal = false; // Close the modal
     }
   
+    onUpdate(carId: number) {
+      console.log('Update clicked for car with ID:', carId);
+      // Add logic to open update modal or navigate to update page
+    }
+  
+    onDelete(carId: number) {
+      console.log('Delete clicked for car with ID:', carId);
+      // Add logic to confirm deletion or open delete modal
+    }
+    
+
+
+    // update delete
+
+      selectedCar: any = {};
+      isUpdateMode: boolean = true;
+    
+      // Open the Update Modal
+      openUpdateModal(car: any) {
+        this.selectedCar = { ...car }; // Copy the car details
+        this.isUpdateMode = true; // Set to update mode
+        const modalElement = document.getElementById('vehicleActionModal');
+        const modal = new bootstrap.Modal(modalElement!);
+        modal.show();
+      }
+    
+      // Open the Delete Modal
+      openDeleteModal(carId: number) {
+        this.selectedCar = { id: carId }; // Only need the ID for delete
+        this.isUpdateMode = false; // Set to delete mode
+        const modalElement = document.getElementById('vehicleActionModal');
+        const modal = new bootstrap.Modal(modalElement!);
+        modal.show();
+      }
+    
+      // Handle Update Action
+      handleUpdate(updatedCar: any) {
+        console.log('Updated vehicle details:', updatedCar);
+        // Add your logic to update the vehicle, e.g., call an API to update the database
+      }
+    
+      // Handle Delete Action
+      handleDelete(carId: number) {
+        console.log('Vehicle deleted with ID:', carId);
+        // Add your logic to delete the vehicle, e.g., call an API to delete the record
+      }
+
+
 }

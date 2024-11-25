@@ -62,12 +62,27 @@
         <div class="row">
           <div *ngFor="let car of vehicles.cars" class="col-md-4 col-lg-3 mb-4">
             <div class="card vehicle-card p-3 text-center">
-                <i class="fas fa-pencil-alt position-absolute top-0 end-0 p-2" style="color: #333; cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"></i>
+               <!-- Pencil Icon Trigger for Dropdown -->
+  <i class="fas fa-pencil-alt position-absolute top-0 end-0 p-2"
+  style="color: #333; cursor: pointer;"
+  data-bs-toggle="dropdown"
+  aria-expanded="false"></i>
+
+<!-- Dropdown Menu for Update and Delete -->
+<ul class="dropdown-menu dropdown-menu-end">
+  <li>
+    <a class="dropdown-item" (click)="openUpdateModal(car)">Update</a>
+  </li>
+  <li>
+    <a class="dropdown-item text-danger"  (click)="openDeleteModal(car.id)">Delete</a>
+  </li>
+</ul>
               <img
                 [src]="car.photo"
                 alt="{{ car.name }}"
                 class="card-img-top img-fluid small-img"
               />
+
               <div class="card-body">
                 <h5 class="card-title">{{ car.name }}</h5>
                 <p class="mb-2">
@@ -86,6 +101,32 @@
               </div>
             </div>
           </div>
+
+<!-- Vehicle Action Modal (Update/Delete) -->
+<app-updatedelete 
+[vehicle]="selectedCar" 
+[isUpdateMode]="isUpdateMode" 
+(onUpdate)="handleUpdate($event)" 
+(onDelete)="handleDelete($event)">
+</app-updatedelete>
+                        <!-- Delete Confirmation Modal -->
+<!-- <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content"> -->
+      <!-- <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Delete Vehicle</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this vehicle? This action cannot be undone.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div> -->
         </div>
       </div>
       <app-viewdetailpopup
