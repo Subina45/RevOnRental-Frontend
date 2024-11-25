@@ -298,3 +298,28 @@ body {
 }
 
 
+.vehicle-images-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.vehicle-images-container .vehicle-card {
+    min-width: 150px;
+    flex: 0 0 auto;
+    text-align: center;
+}
+
+.vehicle-images-container img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.car-price {
+    margin-top: 5px;
+}
+
+

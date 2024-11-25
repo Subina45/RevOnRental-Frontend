@@ -61,5 +61,29 @@ getLoggedInRole(){
   createBusiness(formData: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/register/business`, formData);
   }
+
+  search(requestData: any): Observable<any>{
+    const params = new HttpParams()
+      .set('vehicleType', requestData.vehicleType)
+      .set('currentAddress', requestData.currentAddress)
+      .set('latitude', requestData.latitude)
+      .set('longitude', requestData.longitude)
+      .set('destinationAddress', requestData.destinationAddress)
+      .set('startDateTime', requestData.startDateTime)
+      .set('endDateTime', requestData.endDateTime);
+      
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${this.getToken()}`
+      });
+    return this.http.get(`${this.apiUrl}/VehicleRental/search`,{ headers, params })
+  }
+
+  getBusinessDetails(businessId: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.getToken()}`
+    });
+  
+    return this.http.get(`${this.apiUrl}/businesses/${businessId}`, { headers });
+  }  
 }
 

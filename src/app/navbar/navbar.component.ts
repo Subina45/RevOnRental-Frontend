@@ -16,6 +16,7 @@ import { LoginstateService } from '../aservice/loginstate.service';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+  showProfileModal = false; // Initially hidden
   menuOpen: boolean = false;
   isLoggedIn: boolean = false;
   
@@ -35,6 +36,33 @@ export class NavbarComponent {
   onLogout():void{
     this.loginStateService.logout();
   }
+
+  userProfile = {
+    name: 'John Doe',
+    email: 'john.doe@gmail.com',
+    phone: '987654321',
+    imageUrl: 'assets/images/user-profile.png'
+  };
+
+  // Function to open the profile modal
+  openProfileModal(): void {
+    this.showProfileModal = true;
+  }
+  // Function to close the profile modal
+  closeProfileModal(): void {
+    this.showProfileModal = false;
+  }
+
+  editProfile(): void {
+    alert('Edit profile feature is coming soon!');
+  }
+  forgotPassword(): void {
+    alert('Edit profile feature is coming soon!');
+  }
+  viewBookingHistory(): void {
+    alert('Edit profile feature is coming soon!');
+  }
+
    
 }
 

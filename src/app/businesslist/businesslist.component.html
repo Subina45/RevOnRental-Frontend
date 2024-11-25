@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,20 +27,20 @@
         </div>
 
         <div class="row vehicle-list">
-            <div class="col-md-4 col-sm-6 vehicle-card-wrapper" *ngFor="let vehicle of vehicles">
+            <div class="col-md-4 col-sm-6 vehicle-card-wrapper" *ngFor="let businessItem of businesses">
                 <div class="vehicle-card">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h2 class="mb-0">{{ vehicle.name }}</h2>
+                        <h2 class="mb-0">{{ businessItem.name }}</h2>
                         <div class="rating d-flex align-items-center">
                             <span class="star me-1">★</span>
-                            <span>{{ vehicle.rating }}</span>
+                            <span>{{ businessItem.rating }}</span>
                         </div>
                     </div>
                     <p>
                         <i class="fas fa-map-marker-alt text-light-dark"></i>
-                        {{ vehicle.distance }} away
+                        {{ businessItem.distance }} away
                     </p>
-                    <button (click)="viewMore(vehicle)" class="btn view-more">View More</button>
+                    <button (click)="viewMore(businessItem)" class="btn view-more">View More</button>
                 </div>
             </div>
         </div>
@@ -51,54 +50,53 @@
     <div class="modal-backdrop" *ngIf="showModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ selectedVehicle?.name }} Details</h5>
+                <h5 class="modal-title">{{ selectedBusiness?.businessName }} Details</h5>
                 <button class="btn-close" (click)="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <!-- Threshold Price Section -->
-                <div class="threshold-price" *ngIf="selectedVehicle">
-                    <p><strong>Threshold Price:</strong> Rs {{ selectedVehicle.thresholdPrice || 2000 }}</p>
+                <div class="threshold-price" *ngIf="selectedBusiness">
+                    <p><strong>Threshold Price:</strong> Rs {{ selectedBusiness.thresholdPrice || 2000 }}</p>
                 </div>
-                <div class="d-flex justify-content-between">
-                    <div class="car-item text-center">
-                        <img *ngIf="selectedVehicle?.imgUrl" [src]="selectedVehicle?.imgUrl"
-                            alt="{{ selectedVehicle?.name }}" class="vehicle-image img-fluid rounded">
-                        <p class="car-price">Rs {{ selectedVehicle?.price1 || 'N/A' }}</p>
-                    </div>
-                    <div class="car-item text-center">
-                        <img *ngIf="selectedVehicle?.imgUrl" [src]="selectedVehicle?.imgUrl"
-                            alt="{{ selectedVehicle?.name }}" class="vehicle-image img-fluid rounded">
-                        <p class="car-price">Rs {{ selectedVehicle?.price1 || 'N/A' }}</p>
-                    </div>
-                    <div class="car-item text-center">
-                        <img *ngIf="selectedVehicle?.imgUrl" [src]="selectedVehicle?.imgUrl"
-                            alt="{{ selectedVehicle?.name }}" class="vehicle-image img-fluid rounded">
-                        <p class="car-price">Rs {{ selectedVehicle?.price1 || 'N/A' }}</p>
+                
+                <!-- Scrollable Vehicle Photos and Rates -->
+                <div class="vehicle-images-container">
+                    <div class="vehicle-card" *ngFor="let vehicle of selectedBusiness?.availableVehicles">
+                        <img *ngIf="vehicle.photo" [src]="vehicle.photo.fileContent"
+                            [alt]="vehicle.photo.fileName" class="vehicle-image img-fluid rounded">
+                        <p class="car-price">
+                            Rs {{
+                                selectedBusiness.displayedRate === 'Hourly' ? vehicle.hourlyRate :
+                                selectedBusiness.displayedRate === 'HalfDay' ? vehicle.halfDayRate :
+                                selectedBusiness.displayedRate === 'FullDay' ? vehicle.fullDayRate : 'N/A'
+                            }}
+                        </p>
                     </div>
                 </div>
+
                 <!-- Business Details Section -->
-    <div class="business-details mt-4">
-        <div class="detail-row">
-            <span class="label"><strong>Distance</strong></span>
-            <span class="value">{{ selectedVehicle?.distance || 'N/A' }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="label"><strong>Rating</strong></span>
-            <span class="value">{{ selectedVehicle?.rating || 'N/A' }}</span>
-        </div>
-        <div class="detail-row">
+                <div class="business-details mt-4">
+                    <div class="detail-row">
+                        <span class="label"><strong>Distance</strong></span>
+                        <span class="value">{{ selectedBusiness?.distance || 'N/A' }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label"><strong>Rating</strong></span>
+                        <span class="value">{{ selectedBusiness?.averageRating || 'N/A' }}</span>
+                    </div>
+                    <!-- <div class="detail-row">
             <span class="label"><strong>Description</strong></span>
-            <span class="value">{{ selectedVehicle?.description || 'N/A' }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="label"><strong>Number</strong></span>
-            <span class="value">{{ selectedVehicle?.phoneNumber || 'N/A' }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="label"><strong>Email</strong></span>
-            <span class="value">{{ selectedVehicle?.email || 'N/A' }}</span>
-        </div>
-    </div>
+            <span class="value">{{ selectedBusiness?.description || 'N/A' }}</span>
+        </div> -->
+                    <div class="detail-row">
+                        <span class="label"><strong>Number</strong></span>
+                        <span class="value">{{ selectedBusiness?.contactNumber || 'N/A' }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label"><strong>Address</strong></span>
+                        <span class="value">{{ selectedBusiness?.address || 'N/A' }}</span>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button (click)="openPaymentModal()" class="btn btn-secondary">Book Now</button>

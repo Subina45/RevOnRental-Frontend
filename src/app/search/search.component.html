@@ -20,13 +20,13 @@
 
         <!-- Vehicle Selection Buttons -->
         <div class="vehicle-type mb-4">
-            <button class="car" [ngClass]="{'selected': selectedVehicle === 'car'}" (click)="selectVehicle('car')">
+            <button class="car" [ngClass]="{'selected': requestData.vehicleType === 'car'}" (click)="selectVehicle('car')">
                 <img src="../assets/images/car.png" alt="Blue car">
             </button>
-            <button class="bike" [ngClass]="{'selected': selectedVehicle === 'bike'}" (click)="selectVehicle('bike')">
+            <button class="bike" [ngClass]="{'selected': requestData.vehicleType === 'bike'}" (click)="selectVehicle('bike')">
                 <img src="../assets/images/bike1.png" alt="bike">
             </button>
-            <button class="bicycle" [ngClass]="{'selected': selectedVehicle === 'cycle'}"
+            <button class="bicycle" [ngClass]="{'selected': requestData.vehicleType === 'cycle'}"
                 (click)="selectVehicle('cycle')">
                 <img src="../assets/images/cycle.png" alt="cycle">
             </button>
@@ -38,7 +38,7 @@
             <div class="form-row align-items-center mb-3 position-relative">
                 <div class="col-md-6">
                     <div class="input-group">
-                        <input type="text" [(ngModel)]="pickupLocation" class="form-control"
+                        <input type="text" [(ngModel)]="requestData.currentAddress" class="form-control"
                             placeholder="Enter your current location" (input)="filterLocation($event, 'pickup')" id="pickup-input">
                         <div *ngIf="pickupFilteredLocations.length > 0" class="suggestions-list">
                             <div *ngFor="let location of pickupFilteredLocations" class="suggestion-item"
@@ -49,10 +49,10 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" value="2024-12-11" class="form-control">
+                    <input type="date" [(ngModel)]="requestData.startDate"  class="form-control">
                 </div>
                 <div class="col-md-3">
-                    <input type="time" value="12:00" class="form-control">
+                    <input type="time" [(ngModel)]="requestData.startTime"  class="form-control">
                 </div>
             </div>
 
@@ -60,7 +60,7 @@
             <div class="form-row align-items-center mb-3 position-relative">
                 <div class="col-md-6">
                     <div class="input-group">
-                        <input type="text" [(ngModel)]="destinationLocation" class="form-control"
+                        <input type="text" [(ngModel)]="requestData.destinationAddress" class="form-control"
                             placeholder="Enter your destination location" (input)="filterLocation($event, 'destination')" id="destination-input">
                         <div *ngIf="destinationFilteredLocations.length > 0" class="suggestions-list">
                             <div *ngFor="let location of destinationFilteredLocations" class="suggestion-item"
@@ -71,18 +71,17 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" value="2024-12-12" class="form-control">
+                    <input type="date" [(ngModel)]="requestData.endDate"  class="form-control">
                 </div>
                 <div class="col-md-3">
-                    <input type="time" value="12:00" class="form-control">
+                    <input type="time" [(ngModel)]="requestData.endTime" class="form-control">
                 </div>
             </div>
         </div>
 
         <!-- Search Button Centered Below the Search Form -->  
         <div class="text-center">
-            <button class="search btn btn-primary mt-3" routerLink="/businesslist">
-                Search</button>
+            <button class="search btn btn-primary mt-3" (click)="search()">Search</button>
         </div>
     </div>
 
