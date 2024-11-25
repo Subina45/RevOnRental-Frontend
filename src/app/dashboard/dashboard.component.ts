@@ -4,13 +4,14 @@ import { FormsModule } from '@angular/forms';
 // import { BrowserModule } from '@angular/platform-browser';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Chart } from 'chart.js/auto';
+import { AddvehicleComponent } from "../addvehicle/addvehicle.component";
 // import { NgModule } from '@angular/core';
 // import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterLink,RouterOutlet,CommonModule,FormsModule],
+  imports: [RouterLink, RouterOutlet, CommonModule, FormsModule, AddvehicleComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -97,6 +98,19 @@ export class DashboardComponent implements OnInit {
       });
     }
   }
+
+  showPopup = false;
+
+  openPopup(): void {
+    this.showPopup = true;
+  }
+
+  closePopup(): void {
+    this.showPopup = false;
+  }
+
+
+  
     //add vehicle pop up 
     selectedVehicle: string = 'bicycle'; // Default selection (Bicycle)
     quantity: number = 1;

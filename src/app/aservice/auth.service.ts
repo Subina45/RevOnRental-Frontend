@@ -2,7 +2,9 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import * as jwt_decode from 'jwt-decode';
+// import * as jwt_decode from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
+
 
 @Injectable({
   providedIn: 'root'
@@ -61,5 +63,7 @@ getLoggedInRole(){
   createBusiness(formData: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/register/business`, formData);
   }
+
+  
 }
 

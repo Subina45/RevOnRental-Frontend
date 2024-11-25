@@ -82,43 +82,57 @@
                 <h2 class="text-center fw-bold mb-4">Get In Touch</h2>
                 <div class="row justify-content-center">
                     <div class="col-md-8">
-                        <form action="#" method="POST" class="bg-white shadow p-4 rounded">
+                        <form (ngSubmit)="sendEmail()" class="bg-white shadow p-4 rounded">
                             <div class="mb-3">
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    class="form-control"
-                                    placeholder="Your Name"
-                                    required
-                                />
+                              <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                class="form-control"
+                                placeholder="Your Name"
+                                [(ngModel)]="formData.name"
+                                required
+                              />
                             </div>
                             <div class="mb-3">
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    class="form-control"
-                                    placeholder="Your Email"
-                                    required
-                                />
+                              <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-control"
+                                placeholder="Your Email"
+                                [(ngModel)]="formData.email"
+                                required
+                              />
                             </div>
                             <div class="mb-3">
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    rows="5"
-                                    class="form-control"
-                                    placeholder="Your Message"
-                                    required
-                                ></textarea>
+                              <textarea
+                                id="message"
+                                name="message"
+                                rows="5"
+                                class="form-control"
+                                placeholder="Your Message"
+                                [(ngModel)]="formData.message"
+                                required
+                              ></textarea>
+                            </div>
+                            <div *ngIf="successMessage" class="alert alert-success">
+                              {{ successMessage }}
+                            </div>
+                            <div *ngIf="errorMessage" class="alert alert-danger">
+                              {{ errorMessage }}
                             </div>
                             <div class="text-center">
-                                <button type="submit" class= "btn custom-btn px-4 py-2 ">
-                                    Send Message
-                                </button>
+                              <button
+                                type="submit"
+                                class="btn custom-btn px-4 py-2"
+                                [disabled]="isSubmitting"
+                              >
+                                Send Message
+                              </button>
                             </div>
-                        </form>
+                          </form>
+                          
                     </div>
                 </div>
             </div>

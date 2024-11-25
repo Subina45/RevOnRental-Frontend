@@ -10,51 +10,41 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <!-- Chart.js for charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Custom CSS for Primary Color and Enhancements -->
-  <style>
-  
-    /* Sidebar */
-    .sidebar {
-      background-color: var(--primary-color);
-    }
-
-    .sidebar .nav-link {
-      color: white;
-    }
-
-    .sidebar .nav-link:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .sidebar .nav-link i {
-      color: white;
-    }
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
   
-
-  </style>
 </head>
 <body>
   <div class="container-fluid">
     <div class="row">
       <!-- Sidebar -->
-      <nav class="col-md-2 bg-dark text-white vh-100 sidebar d-flex flex-column p-3 position-fixed">
+      <nav class="col-md-2 col-sm-3 sidebar d-flex flex-column p-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link text-white" href="#" routerLink="/dashboard"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
+            <a class="nav-link text-white" routerLink="/dashboard"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="#"routerLink="/booking"><i class="fas fa-calendar-check me-2"></i> Booking</a>
+            <a class="nav-link text-white" routerLink="/booking"><i class="fas fa-calendar-check me-2"></i> Booking</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="#"><i class="fas fa-car me-2"></i> Vehicles</a>
+            <a class="nav-link text-white" routerLink="/vehicle"><i class="fas fa-car me-2"></i> Vehicles</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" href="#"><i class="fas fa-bell me-2"></i> Notifications</a>
+            <a class="nav-link text-white" routerLink="/businessnotification"><i class="fas fa-bell me-2"></i> Notifications</a>
           </li>
+             <!-- Add History section -->
+        <li class="nav-item">
+          <a class="nav-link text-white" routerLink="/history"><i class="fas fa-history me-2"></i> History</a>
+        </li>
         </ul>
       </nav>
+
+ 
+
           <!-- Main Content -->
                <!-- Main Content -->
     <div class="col-md-10 offset-md-2 mt-5">
@@ -63,12 +53,16 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h2 class="section-title">Cars</h2>
         </div>
-        <button class="btn btn-success btn-sm mb-4" (click)="addVehicle('car')">
+        <button class="btn btn-success btn-sm mb-4" (click)="openAddInventoryPopup()">
           <i class="fas fa-plus-circle"></i> Add a New Car to Inventory
         </button>
+        <app-addvehicle *ngIf="showAddInventoryPopup" (close)="closeAddInventoryPopup()"></app-addvehicle>
+        
+      
         <div class="row">
           <div *ngFor="let car of vehicles.cars" class="col-md-4 col-lg-3 mb-4">
             <div class="card vehicle-card p-3 text-center">
+                <i class="fas fa-pencil-alt position-absolute top-0 end-0 p-2" style="color: #333; cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false"></i>
               <img
                 [src]="car.photo"
                 alt="{{ car.name }}"
@@ -94,17 +88,26 @@
           </div>
         </div>
       </div>
+      <app-viewdetailpopup
+[vehicle]="selectedVehicle"
+[showPopup]="showPopup"
+(close)="closePopup()">
+</app-viewdetailpopup>
       <!-- Bikes Section -->
       <div class="vehicle-section mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h2 class="section-title">Bikes</h2>
         </div>
-        <button class="btn btn-success btn-sm mb-4" (click)="addVehicle('car')">
-          <i class="fas fa-plus-circle"></i> Add a New Bike to Inventory
+        <button class="btn btn-success btn-sm mb-4" (click)="openAddInventoryPopup()">
+          <i class="fas fa-plus-circle"></i> Add a New Car to Inventory
         </button>
+        <app-addvehicle *ngIf="showAddInventoryPopup" (close)="closeAddInventoryPopup()"></app-addvehicle>
+        
+
         <div class="row">
           <div *ngFor="let bike of vehicles.bikes" class="col-md-4 col-lg-3 mb-4">
             <div class="card vehicle-card p-3 text-center">
+              <i class="fas fa-pencil-alt position-absolute top-0 end-0 p-2 " style="color: #333;"></i>
               <img
                 [src]="bike.photo"
                 alt="{{ bike.name }}"
@@ -125,22 +128,35 @@
                 <button class="btn btn-primary w-100" (click)="viewMore(bike)">
                   View Detailed Info
                 </button>
+            
+                
               </div>
             </div>
           </div>
         </div>
+      <!-- Vehicle Detail Popup Component -->
+<app-viewdetailpopup
+[vehicle]="selectedVehicle"
+[showPopup]="showPopup"
+(close)="closePopup()">
+</app-viewdetailpopup>
       </div>
+    
       <!-- Cars Section -->
       <div class="vehicle-section mb-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2 class="section-title">Bycycles</h2>
+          <h2 class="section-title">Bicycles</h2>
         </div>
-        <button class="btn btn-success btn-sm mb-4" (click)="addVehicle('bicycle')">
+        <button class="btn btn-success btn-sm mb-4" (click)="openAddInventoryPopup()">
           <i class="fas fa-plus-circle"></i> Add a New Car to Inventory
         </button>
+        <app-addvehicle *ngIf="showAddInventoryPopup" (close)="closeAddInventoryPopup()"></app-addvehicle>
+        
+   
         <div class="row">
           <div *ngFor="let bicycle of vehicles.bicycles" class="col-md-4 col-lg-3 mb-4">
             <div class="card vehicle-card p-3 text-center">
+              <i class="fas fa-pencil-alt position-absolute top-0 end-0 p-2 " style="color: #333;"></i>
               <img
                 [src]="bicycle.photo"
                 alt="{{ bicycle.name }}"
@@ -166,6 +182,11 @@
           </div>
         </div>
       </div>
+      <app-viewdetailpopup
+[vehicle]="selectedVehicle"
+[showPopup]="showPopup"
+(close)="closePopup()">
+</app-viewdetailpopup>
     </div>
     
   
@@ -173,9 +194,6 @@
   </div>
 
 
-<!-- Bootstrap JS and Popper.js -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
 
 </body>
 </html>

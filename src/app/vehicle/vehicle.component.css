@@ -3,16 +3,33 @@
   --primary-color: #863884; /* Deep purple */
   --secondary-color: #6A1B9A; /* Light purple */
 }
-.nav{
-  margin-top: 8vh;
-  height:300vh;
-}
-/* .sidebar {
-  min-height: 130vh;
-} */
-.sidebar {
-  height: 100%;
-}
+
+  /* Sidebar */
+  .row a{
+    font-size: 18px;
+  }
+  .sidebar {
+    background-color: #212529;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    color: white;
+  }
+
+  .sidebar .nav-link {
+    color: white;
+  }
+
+  .sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .sidebar .nav-link i {
+    color: white;
+  }
+
 .container {
   margin-top: 8vh;
   margin-left: 18%;
