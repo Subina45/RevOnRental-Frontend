@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { VehicleService } from '../aservice/vehicle.service';
+import {LoginstateService} from '../aservice/loginstate.service';
 
 
 @Component({
@@ -46,7 +47,8 @@ export class AddvehicleComponent {
   // Inject HttpClient in the constructor for making HTTP requests
   constructor(
     private http: HttpClient,
-    private vehicleservice: VehicleService
+    private vehicleservice: VehicleService,
+    private loginStateService: LoginstateService
   ) { }
 
   onVehicleChange() {
@@ -69,6 +71,7 @@ export class AddvehicleComponent {
 
   // Method to submit the vehicle data to the backend
   onSubmit(event: Event): void {
+    
     event.preventDefault(); // Prevent the default form submission behavior
 
     const formData = new FormData();
@@ -76,6 +79,7 @@ export class AddvehicleComponent {
     // Convert vehicle type and availability status to numeric values
   const vehicleTypeValue = this.getVehicleTypeValue();
   const availabilityStatusValue = this.getAvailabilityStatusValue();
+  const businessId = this.loginStateService.getBusinessId();
 
     // Append vehicle details to the form data
     formData.append('VehicleType', vehicleTypeValue);
@@ -96,8 +100,9 @@ export class AddvehicleComponent {
       formData.append('Photo', this.Photo);
     }
 
-    // Append the BusinessId (this should come from your application state, replace with actual value)
-    formData.append('BusinessID', '9'); // Replace with the actual business ID
+    if(businessId != null){
+    formData.append('BusinessID', businessId); 
+    }
 
     // Send the POST request to the backend API
     this.vehicleservice.addVehicle(formData).subscribe({

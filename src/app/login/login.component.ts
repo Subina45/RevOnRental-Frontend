@@ -49,13 +49,17 @@ export class LoginComponent {
           try {
             const decodedToken: any = jwt_decode(res.accessToken);
             const userRole = decodedToken.role;
+            const businessId = decodedToken.id; 
 
             console.log('Decoded Token:', decodedToken);
           console.log('User Role:', userRole);
         
           // Update login state
           this.loginStateService.setLoginStatus(true);
-  
+            // Store the businessId in the LoginstateService
+          this.loginStateService.setBusinessId(businessId);
+
+          
           // Navigate based on role
           if (userRole === 'Business') {
             this.router.navigate(['/dashboard']); // Navigate to dashboard for Business role
