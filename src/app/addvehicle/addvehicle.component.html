@@ -16,15 +16,15 @@
 
     <div class="form-group">
       <label for="quantity">Quantity</label>
-      <input type="number" id="quantity" name="quantity" min="1" [(ngModel)]="NumberOfVehicle">
+      <input type="number" id="quantity" name="NumberOfVehicle" min="1" [(ngModel)]="NumberOfVehicle">
     </div>
 
     <div *ngIf="VehicleType === 'car' || VehicleType === 'scooter'" class="form-group">
       <label for="brandName">Brand Name</label>
-      <input type="text" id="brandName" name="brandName" [(ngModel)]="Brand">
+      <input type="text" id="brandName" name="Brand" [(ngModel)]="Brand">
 
       <label for="model">Model</label>
-      <input type="text" id="model" name="model" [(ngModel)]="Model">
+      <input type="text" id="model" name="Model" [(ngModel)]="Model">
     </div>
 
     <div *ngIf="VehicleType === 'car' || VehicleType === 'scooter' || VehicleType === 'bicycle'" class="form-group">
@@ -34,7 +34,7 @@
  
     <div class="form-group">
       <label for="status">Status</label>
-      <select id="status" [(ngModel)]="AvailabilityStatus" name="status">
+      <select id="status" [(ngModel)]="AvailabilityStatus" name="AvailabilityStatus">
         <option value="true">Available</option>
         <option value="false">Unavailable</option>
       </select>
@@ -44,15 +44,15 @@
 <div class="rate-row">
   <div class="form-group">
     <label for="hourlyRate">Hourly Rate</label>
-    <input type="number" id="hourlyRate" name="hourlyRate" placeholder="Hourly rate" [(ngModel)]="HourlyRate" min="0">
+    <input type="number" id="hourlyRate" name="HourlyRate" placeholder="Hourly rate" [(ngModel)]="HourlyRate" min="0">
   </div>
   <div class="form-group">
     <label for="halfDayRate">Half-Day Rate</label>
-    <input type="number" id="halfDayRate" name="halfDayRate" placeholder="Half-day rate" [(ngModel)]="HalfDayRate" min="0">
+    <input type="number" id="halfDayRate" name="HalfDayRate" placeholder="Half-day rate" [(ngModel)]="HalfDayRate" min="0">
   </div>
   <div class="form-group">
     <label for="fullDayRate">Full-Day Rate</label>
-    <input type="number" id="fullDayRate" name="fullDayRate" placeholder="Full-day rate" [(ngModel)]="FullDayRate" min="0">
+    <input type="number" id="fullDayRate" name="FullDayRate" placeholder="Full-day rate" [(ngModel)]="FullDayRate" min="0">
   </div>
 </div>
 

@@ -26,7 +26,8 @@ export class NavbarComponent {
   }
   constructor(
     private loginStateService: LoginstateService,
-    private router: Router
+    private router: Router,
+    private authservice: AuthService
   ){}
   
   ngOnInit():void {
@@ -36,6 +37,9 @@ export class NavbarComponent {
   }
   onLogout():void{
     this.loginStateService.logout();
+    this.authservice.logout();
+
+
   }
 
   userProfile = {

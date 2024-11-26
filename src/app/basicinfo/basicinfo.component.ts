@@ -156,6 +156,12 @@ export class BasicinfoComponent {
     // Submit the form data
     this.authService.createBusiness(formData).subscribe((res:any)=>{
       console.log('Business registered successfully', res);
+
+      // if (res && res.businessId) {
+      //   // Store the businessId in local storage
+      //   localStorage.setItem('businessId', res.businessId.toString());
+      // }
+
       this.router.navigate(['/login']);
     },(err) => {
       console.error('Failed to register business', err);

@@ -4,16 +4,31 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { VehicleService } from '../aservice/vehicle.service';
+
 
 @Component({
   selector: 'app-addvehicle',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './addvehicle.component.html',
   styleUrls: ['./addvehicle.component.css']
 })
 export class AddvehicleComponent {
-  VehicleType: string = 'bicycle'; // Default selection (Bicycle)
+
+  VehicleType: string = ''; 
+  getVehicleTypeValue(): string {
+    switch (this.VehicleType) {
+      case 'car':
+        return '0';
+      case 'bike':
+        return '1';
+      case 'bicycle':
+        return '2';
+      default:
+        return '0'; // Default to 'car' if no match found
+    }
+  }
   NumberOfVehicle: number = 1;
   Brand: string = '';
   Model: string = '';
@@ -21,12 +36,18 @@ export class AddvehicleComponent {
 
   // Status and price fields
   AvailabilityStatus: boolean = true;
+  getAvailabilityStatusValue(): boolean {
+    return this.AvailabilityStatus;
+  }
   HourlyRate: number | null = null; // Hourly rate
   HalfDayRate: number | null = null; // Half-day rate
   FullDayRate: number | null = null; // Full-day rate
 
   // Inject HttpClient in the constructor for making HTTP requests
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private vehicleservice: VehicleService
+  ) { }
 
   onVehicleChange() {
     console.log(`Vehicle Type: ${this.VehicleType}`);
@@ -52,8 +73,12 @@ export class AddvehicleComponent {
 
     const formData = new FormData();
 
+    // Convert vehicle type and availability status to numeric values
+  const vehicleTypeValue = this.getVehicleTypeValue();
+  const availabilityStatusValue = this.getAvailabilityStatusValue();
+
     // Append vehicle details to the form data
-    formData.append('VehicleType', this.VehicleType);
+    formData.append('VehicleType', vehicleTypeValue);
     formData.append('Brand', this.Brand);
     formData.append('Model', this.Model);
     formData.append('NumberOfVehicle', this.NumberOfVehicle.toString());
@@ -64,7 +89,7 @@ export class AddvehicleComponent {
     formData.append('FullDayRate', this.FullDayRate ? this.FullDayRate.toString() : '0');
 
     // Append availability status
-    formData.append('AvailabilityStatus', this.AvailabilityStatus.toString());
+    formData.append('AvailabilityStatus', availabilityStatusValue.toString());
 
     // Append the business registration file if available
     if (this.Photo) {
@@ -72,18 +97,17 @@ export class AddvehicleComponent {
     }
 
     // Append the BusinessId (this should come from your application state, replace with actual value)
-    formData.append('BusinessId', '123'); // Replace with the actual business ID
+    formData.append('BusinessID', '9'); // Replace with the actual business ID
 
     // Send the POST request to the backend API
-    this.http.post('https://localhost:7275/api/Vehicle/add', formData)
-      .subscribe(
-        (response) => {
-          console.log('Vehicle added successfully', response);
-          this.closePopup(); // Close the popup on success
-        },
-        (error) => {
-          console.error('Failed to add vehicle', error);
-        }
-      );
+    this.vehicleservice.addVehicle(formData).subscribe({
+      next: (response) => {
+        console.log('Vehicle added successfully', response);
+        this.closePopup(); // Close the popup on success
+      },
+      error: (error) => {
+        console.error('Failed to add vehicle', error);
+      },
+    });
   }
 }

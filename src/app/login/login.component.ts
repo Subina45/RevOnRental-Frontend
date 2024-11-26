@@ -52,10 +52,7 @@ export class LoginComponent {
 
             console.log('Decoded Token:', decodedToken);
           console.log('User Role:', userRole);
-          
-  
-          
-  
+        
           // Update login state
           this.loginStateService.setLoginStatus(true);
   

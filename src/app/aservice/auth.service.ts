@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import jwt_decode from 'jwt-decode';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,10 @@ export class AuthService {
   private readonly tokenKey = 'authToken'; // Key to store token in localStorage
   private readonly apiUrl = environment.API_URL; // Base API URL
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) { }
 
   // Save token in localStorage
   setToken(token: string): void {
@@ -65,6 +69,7 @@ export class AuthService {
   // Logout method
   logout(): void {
     this.clearToken();
+    this.router.navigate(['/home']);
     // Optionally, redirect to the login page or home page
   }
 
