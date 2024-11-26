@@ -1,6 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+export interface Booking {
+  id: number;                // Add this property
+  vehiclePhoto: string;
+  user: string;
+  startDate: Date;
+  endDate: Date;
+  totalPrice: number;
+  status: string;
+}
 
 @Component({
   selector: 'app-booking',
@@ -10,8 +19,11 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   styleUrls: ['./booking.component.css']
 })
 export class BookingComponent {
-  bookings = [
+  
+ 
+  bookings: Booking[] = [
     {
+      id: 1, // Add unique IDs here
       vehiclePhoto: 'assets/images/bicycle.png',
       user: 'kabita',
       startDate: new Date('2024-11-22'),
@@ -20,6 +32,7 @@ export class BookingComponent {
       status: 'Confirmed'
     },
     {
+      id: 2, // Add unique IDs here
       vehiclePhoto: 'assets/images/car.png',
       user: 'Jyoti',
       startDate: new Date('2024-11-20'),
@@ -28,6 +41,7 @@ export class BookingComponent {
       status: 'Pending'
     },
     {
+      id: 3, // Add unique IDs here
       vehiclePhoto: 'assets/images/bike.png',
       user: 'subina',
       startDate: new Date('2024-11-21'),
@@ -36,4 +50,16 @@ export class BookingComponent {
       status: 'Cancelled'
     }
   ];
+  
+  // Function to handle accepting a booking
+  acceptBooking(bookingId: number) {
+    console.log("Accepted booking with ID:", bookingId);
+    // Implement the logic to accept the booking
+  }
+
+  // Function to handle rejecting a booking
+  rejectBooking(bookingId: number) {
+    console.log("Rejected booking with ID:", bookingId);
+    // Implement the logic to reject the booking
+  }  
 }

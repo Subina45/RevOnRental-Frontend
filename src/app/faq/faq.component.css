@@ -87,7 +87,12 @@ body {
   
   
 /* Footer Section */
+
+.bg-custom{
+margin-top: 74vh;
+}
 footer {
+    /* margin-top: 60vh; */
     background-color: var(--primary-color);
     color: white;
     padding: 20px 0;
@@ -149,6 +154,7 @@ footer {
 }
 
 .social-icons {
+
     margin-top: 20px;
 }
 

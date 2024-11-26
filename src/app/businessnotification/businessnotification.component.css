@@ -11,9 +11,11 @@
     width: 240px;
     color: white;
   }
+  
 
   .sidebar .nav-link {
     color: white;
+    cursor: pointer;
   }
 
   .sidebar .nav-link:hover {

@@ -1,34 +1,4 @@
-
-  /* Sidebar */
-  .row a{
-    font-size: 18px;
-  }
-  .sidebar {
-    background-color: #212529;
-    min-height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 240px;
-    color: white;
-  }
-
-  .sidebar .nav-link {
-    color: white;
-  }
-
-  .sidebar .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .sidebar .nav-link i {
-    color: white;
-  }
-  h2{
-    font-family: Georgia, 'Times New Roman', Times, serif;
-  }
-
-  :root {
+:root {
     --text-color: #0B2154;  /* Dark blue text color  */
    --primary-color: #863884;  /* Deep purple */
    --secondary-color: #6A1B9A;  /* Light purple */
@@ -47,7 +17,6 @@
     margin-top: 6vh;
     padding: 20px;
     align-items: center;
-   width: 100%;
   }
 
   .full-height-container {

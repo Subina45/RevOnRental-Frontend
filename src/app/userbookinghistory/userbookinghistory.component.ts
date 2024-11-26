@@ -1,8 +1,10 @@
+
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
+
 interface Booking {
-  User: string;
+  BusinessName: string;
   Model: string;
   Brand: string;
   StartDate: string;
@@ -15,16 +17,17 @@ interface Booking {
 }
 
 @Component({
-  selector: 'app-businesshistory',
+  selector: 'app-userbookinghistory',
   standalone: true,
-  imports: [RouterLink,RouterOutlet,CommonModule],
-  templateUrl: './businesshistory.component.html',
-  styleUrl: './businesshistory.component.css'
+  imports: [RouterOutlet,CommonModule],
+  templateUrl: './userbookinghistory.component.html',
+  styleUrl: './userbookinghistory.component.css'
 })
-export class BusinesshistoryComponent {
+export class UserbookinghistoryComponent {
+
   bookings: Booking[] = [
     {
-      User: "Elite Car Rentals",
+      BusinessName: "Elite Car Rentals",
       Model: "Accord",
       Brand: "Honda",
       StartDate: "2024-12-10",
@@ -35,7 +38,7 @@ export class BusinesshistoryComponent {
       CreatedDate: "2024-11-25"
     },
     {
-      User: "Smart Rentals",
+      BusinessName: "Smart Rentals",
       Model: "Accord",
       Brand: "Honda",
       StartDate: "2024-12-10",
@@ -46,7 +49,7 @@ export class BusinesshistoryComponent {
       CreatedDate: "2024-11-25"
     },
     {
-     User: "Ridify Business",
+      BusinessName: "Ridify Business",
       Model: "Accord",
       Brand: "Honda",
       StartDate: "2024-12-10",
@@ -67,5 +70,4 @@ export class BusinesshistoryComponent {
   ngOnInit(): void {
     // Fetch bookings data if necessary
   }
-
 }

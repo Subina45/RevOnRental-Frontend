@@ -23,6 +23,8 @@ import { BookingComponent } from './booking/booking.component';
 import { VehicleComponent } from './vehicle/vehicle.component';
 import { NotificationComponent } from './notification/notification.component';
 import { BusinessnotificationComponent } from './businessnotification/businessnotification.component';
+import { BusinesshistoryComponent } from './businesshistory/businesshistory.component';
+import { UserbookinghistoryComponent } from './userbookinghistory/userbookinghistory.component';
 // import { NotificationComponent } from './notification/notification.component';
 
 export const routes: Routes = [
@@ -150,6 +152,14 @@ export const routes: Routes = [
      {
         path:'businessnotification',
         component:BusinessnotificationComponent
+     },
+     {
+        path:'businesshistory',
+        component:BusinesshistoryComponent
+     },
+     {
+        path:'userbookinghistory',
+        component:UserbookinghistoryComponent
      }
     
 

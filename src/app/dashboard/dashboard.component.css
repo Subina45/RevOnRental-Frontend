@@ -24,6 +24,10 @@
   .sidebar .nav-link i {
     color: white;
   }
+  h2{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+  }
+
 
   /* Header Color */
   .card-header {
