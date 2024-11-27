@@ -21,11 +21,11 @@ export class AddvehicleComponent {
   getVehicleTypeValue(): string {
     switch (this.VehicleType) {
       case 'car':
-        return '0';
+        return '2';
       case 'bike':
         return '1';
       case 'bicycle':
-        return '2';
+        return '0';
       default:
         return '0'; // Default to 'car' if no match found
     }
@@ -102,6 +102,7 @@ export class AddvehicleComponent {
 
     if(businessId != null){
     formData.append('BusinessID', businessId); 
+    console.log("Business Id:", businessId);
     }
 
     // Send the POST request to the backend API
