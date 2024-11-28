@@ -14,127 +14,110 @@
 <body>
 
     <div class="container business-list">
+        <!-- Display search details -->
         <div class="rental-details row">
-            <div class="col-md-3 pickup-info">
-                <span class="label">Current Location</span>
-                <span class="location">User pickup location</span>
-                <span class="date-time">Mon, Nov 18, 12:00 PM</span>
-            </div>
-            <div class="col-md-3 return-info">
-                <span class="label">Destination Location</span>
-                <span class="location">User Destination Location</span>
-                <span class="date-time">Tue, Nov 19, 12:00 PM</span>
-            </div>
+          <div class="col-md-3 pickup-info">
+            <span class="label">Current Location</span>
+            <span class="location">{{ searchDetails.currentLocation }}</span>
+            <span class="date-time">
+              {{ searchDetails.startDateTime | date: 'EEE, MMM d, h:mm a' }}
+            </span>
+          </div>
+          <div class="col-md-3 return-info">
+            <span class="label">Destination Location</span>
+            <span class="location">{{ searchDetails.destinationLocation }}</span>
+            <span class="date-time">
+              {{ searchDetails.endDateTime | date: 'EEE, MMM d, h:mm a' }}
+            </span>
+          </div>
         </div>
-
+      
+        <!-- Display list of vehicles -->
         <div class="row vehicle-list">
-            <div class="col-md-4 col-sm-6 vehicle-card-wrapper" *ngFor="let vehicle of vehicles">
-                <div class="vehicle-card">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h2 class="mb-0">{{ vehicle.name }}</h2>
-                        <div class="rating d-flex align-items-center">
-                            <span class="star me-1">★</span>
-                            <span>{{ vehicle.rating }}</span>
-                        </div>
-                    </div>
-                    <p>
-                        <i class="fas fa-map-marker-alt text-light-dark"></i>
-                        {{ vehicle.distance }} away
-                    </p>
-                    <button (click)="viewMore(vehicle)" class="btn view-more">View More</button>
+          <div class="col-md-4 col-sm-6 vehicle-card-wrapper" *ngFor="let vehicle of vehicles">
+            <div class="vehicle-card">
+              <div class="d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">{{ vehicle.businessName }}</h2>
+                <div class="rating d-flex align-items-center">
+                  <span class="star me-1">★</span>
+                  <span>{{ vehicle.rating }}</span>
                 </div>
+              </div>
+              <p>
+                <i class="fas fa-map-marker-alt text-light-dark"></i>
+                {{ vehicle.distance }} km away
+              </p>
+              <button (click)=" getBusinessDetails('9')" class="btn view-more">View More</button>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
+    
+      
 
     <!-- Modal -->
-    <div class="modal-backdrop" *ngIf="showModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{ selectedVehicle?.name }} Details</h5>
-                <button class="btn-close" (click)="closeModal()">&times;</button>
+    
+<!-- Modal Section -->
+<div class="modal-backdrop" *ngIf="showModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ selectedVehicle?.model }} Details</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Threshold Price Section -->
+          <div class="threshold-price mb-3">
+            <p><strong>Threshold Price:</strong> Rs {{ 2000 }}</p>
+          </div>
+  
+          <!-- Vehicle Images Section -->
+          <div class="row mb-3">
+            <div class="col-md-4" *ngIf="selectedVehicle?.imgUrl">
+              <img [src]="selectedVehicle.imgUrl" alt="{{ selectedVehicle.model }}" class="img-fluid rounded" />
             </div>
-            <div class="modal-body">
-                <!-- Threshold Price Section -->
-                <div class="threshold-price" *ngIf="selectedVehicle">
-                    <p><strong>Threshold Price:</strong> Rs {{ selectedVehicle.thresholdPrice || 2000 }}</p>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <div class="car-item text-center">
-                        <img *ngIf="selectedVehicle?.imgUrl" [src]="selectedVehicle?.imgUrl"
-                            alt="{{ selectedVehicle?.name }}" class="vehicle-image img-fluid rounded">
-                        <p class="car-price">Rs {{ selectedVehicle?.price1 || 'N/A' }}</p>
-                    </div>
-                    <div class="car-item text-center">
-                        <img *ngIf="selectedVehicle?.imgUrl" [src]="selectedVehicle?.imgUrl"
-                            alt="{{ selectedVehicle?.name }}" class="vehicle-image img-fluid rounded">
-                        <p class="car-price">Rs {{ selectedVehicle?.price1 || 'N/A' }}</p>
-                    </div>
-                    <div class="car-item text-center">
-                        <img *ngIf="selectedVehicle?.imgUrl" [src]="selectedVehicle?.imgUrl"
-                            alt="{{ selectedVehicle?.name }}" class="vehicle-image img-fluid rounded">
-                        <p class="car-price">Rs {{ selectedVehicle?.price1 || 'N/A' }}</p>
-                    </div>
-                </div>
-                <!-- Business Details Section -->
-    <div class="business-details mt-4">
-        <div class="detail-row">
-            <span class="label"><strong>Distance</strong></span>
-            <span class="value">{{ selectedVehicle?.distance || 'N/A' }}</span>
+            <!-- Add more images if available -->
+          </div>
+  
+   
+  
+          <!-- Business Details Section -->
+          <div class="business-details mt-4">
+            <h5>Business Details</h5>
+            <div class="detail-row mb-2">
+              <span class="label"><strong>Business Name:</strong></span>
+              <span class="value">{{ selectedVehicle.businessName || 'N/A' }}</span>
+            </div>
+            <div class="detail-row mb-2">
+              <span class="label"><strong>Address:</strong></span>
+              <span class="value">{{ businessDetails.address || 'N/A' }}</span>
+            </div>
+            <div class="detail-row mb-2">
+              <span class="label"><strong>Contact Number:</strong></span>
+              <span class="value">{{ businessDetails.contactNumber || 'N/A' }}</span>
+            </div>
+           
+            <div class="detail-row mb-2">
+              <span class="label"><strong>Average Rating:</strong></span>
+              <span class="value">{{ businessDetails.averageRating || 'N/A' }} ★</span>
+            </div>
+            <div class="detail-row mb-2">
+                <span class="label"><strong>Reviews:</strong></span>
+                <span class="value">{{ businessDetails.reviews || 'N/A' }}</span>
+              </div>
+          </div>
         </div>
-        <div class="detail-row">
-            <span class="label"><strong>Rating</strong></span>
-            <span class="value">{{ selectedVehicle?.rating || 'N/A' }}</span>
+        <div class="modal-footer">
+          <button  class="btn btn-success">Book Now</button>
+          <!-- <button (click)="closeModal()" class="btn btn-secondary">Close</button> -->
         </div>
-        <div class="detail-row">
-            <span class="label"><strong>Description</strong></span>
-            <span class="value">{{ selectedVehicle?.description || 'N/A' }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="label"><strong>Number</strong></span>
-            <span class="value">{{ selectedVehicle?.phoneNumber || 'N/A' }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="label"><strong>Email</strong></span>
-            <span class="value">{{ selectedVehicle?.email || 'N/A' }}</span>
-        </div>
+      </div>
     </div>
-            </div>
-            <div class="modal-footer">
-                <button (click)="openPaymentModal()" class="btn btn-secondary">Book Now</button>
-            </div>
-        </div>
-    </div>
+  </div>
+         
+      
+ 
 
-    <div class="modal-backdrop" *ngIf="showPaymentModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    <i class="fas fa-money-check-alt"></i> Payment Method
-                </h5>
-                <button class="btn-close" (click)="closePaymentModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>Please choose your preferred payment method to proceed:</p>
-                <div class="payment-options">
-                    <button class="payment-option" [class.selected]="paymentMethod === 'cash'"
-                        (click)="selectPaymentMethod('cash')">
-                        <i class="fas fa-money-bill-wave payment-option-icon"></i> Cash after visit
-                    </button>
-                    <button class="payment-option" [class.selected]="paymentMethod === 'online'"
-                        (click)="selectPaymentMethod('online')">
-                        <i class="fas fa-credit-card payment-option-icon"></i> Online
-                    </button>
-                </div>
-                <div class="payment-total">
-                    <p><strong>Total:</strong> Rs 5,000/-</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-proceed" (click)="processPayment()">Proceed to Pay</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

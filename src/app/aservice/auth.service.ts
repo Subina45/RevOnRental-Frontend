@@ -25,6 +25,7 @@ export class AuthService {
 
   // Retrieve token
   getToken(): string | null {
+    console.log('Inside Get token');
     return localStorage.getItem(this.tokenKey);
   }
 
