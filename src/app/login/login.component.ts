@@ -24,6 +24,7 @@ export class LoginComponent {
   };
 
   showPassword = false;
+  isLoading = false; //Loading state
 
   constructor(
     private authService: AuthService,
@@ -37,6 +38,7 @@ export class LoginComponent {
 
   onLogin() {
     console.log('Login Object:', this.loginObj);
+    this.isLoading = true; // Set loading to true when login starts
   
     this.authService.loginUser(this.loginObj).subscribe(
       (res: any) => {
@@ -53,13 +55,15 @@ export class LoginComponent {
 
             console.log('Decoded Token:', decodedToken);
           console.log('User Role:', userRole);
-        
+          
+  
+          
+  
           // Update login state
           this.loginStateService.setLoginStatus(true);
-            // Store the businessId in the LoginstateService
+          // Store the businessId in the LoginstateService
           this.loginStateService.setBusinessId(businessId);
-
-          
+  
           // Navigate based on role
           if (userRole === 'Business') {
             this.router.navigate(['/dashboard']); // Navigate to dashboard for Business role
@@ -80,6 +84,9 @@ export class LoginComponent {
       (err) => {
         console.error('Login failed', err);
         alert('Invalid email or password.');
+      },
+      () => {
+        this.isLoading = false; // Set loading to false after login completes
       }
     );
   }

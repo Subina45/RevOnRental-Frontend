@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-businessnotification',
@@ -9,5 +9,12 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './businessnotification.component.css'
 })
 export class BusinessnotificationComponent {
+
+  constructor(
+    private router: Router
+  ){}
+  navigateTo(path: string) {
+    this.router.navigate([path]);
+  }
 
 }

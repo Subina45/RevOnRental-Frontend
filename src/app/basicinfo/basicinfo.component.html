@@ -110,6 +110,51 @@
         .btn-submit:hover {
             background-color: #6a1b9a;
         }
+
+        .suggestions-list {
+            border: 1px solid #ddd;
+            max-height: 200px;
+            overflow-y: auto;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            background: #fff;
+            width: auto;
+            z-index: 1000;
+        }
+
+        .suggestions-list li {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestions-list li:hover {
+            background: #f0f0f0;
+        }
+
+        /* loadingspinner */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -216,6 +261,10 @@
 
             <!-- Submit Button -->
             <button type="submit" (click)="onSubmit()" class="btn-submit mt-4">Submit</button>
+            <!-- Loading Spinner -->
+            <div *ngIf="isLoading" class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
         </div>
     </div>
 

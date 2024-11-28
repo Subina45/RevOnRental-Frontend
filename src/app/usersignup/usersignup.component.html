@@ -40,7 +40,11 @@
                         </li>
                     </ul>
 
-                    <button type="submit">Sign Up</button>
+                    <button type="submit" [disabled]="isLoading">Sign Up</button>
+                    <!-- Loading Spinner -->
+                    <div *ngIf="isLoading" class="loading-spinner">
+                        <div class="spinner"></div>
+                    </div>
                     <!-- <p>Already have an account? <a  routerLink="/login">Login</a></p> -->
                 </form>
 

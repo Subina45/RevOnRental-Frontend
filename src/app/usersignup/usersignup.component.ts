@@ -78,6 +78,7 @@ export class UsersignupComponent {
 
   // for password show hide icon
   showPassword = false;
+  isLoading = false; // Loading state
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
@@ -138,13 +139,14 @@ export class UsersignupComponent {
   onSignUp() {
     //this line to inspect the signup object before making the API call
     console.log('Signup Object:', this.signupObj);
+    this.isLoading = true; // Set loading to true when signup starts
 
     this.authsrv.createUser(this.signupObj).subscribe((res: any) => {
       console.log('Signup successful', res);
       this.router.navigate(['/login']);
     },
-     (err) => {
-      console.error('Signup failed', err);
+      (err) => {
+        console.error('Signup failed', err);
         if (err.status === 400) {
           this.validationErrors = [];
           if (err.error) {
@@ -160,8 +162,12 @@ export class UsersignupComponent {
           console.error('Unexpected error:', err);
           this.validationErrors = ['An unexpected error occurred. Please try again later.'];
         }
-    });
-    
+      },
+      () => {
+        this.isLoading = false; // Set loading to false after signup completes
+      }
+    );
+
   }
 
 }

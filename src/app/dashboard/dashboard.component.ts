@@ -12,7 +12,7 @@ import { VehicleService } from '../aservice/vehicle.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterLink, CommonModule, FormsModule, AddvehicleComponent],
+  imports: [RouterLink, CommonModule, FormsModule, AddvehicleComponent,RouterOutlet],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -25,7 +25,11 @@ export class DashboardComponent implements OnInit {
   barChartData: number[] = []; // Data for pie chart (Available Vehicles)
   pieChartData: number[] = []; // Data for bar chart (Total Vehicles)
   
+  isSidebarOpen: boolean = true; // Initially, the sidebar is open
 
+  toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
   constructor(private vehicleservice: VehicleService) { }
 
   // vehicles = [

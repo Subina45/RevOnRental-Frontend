@@ -27,7 +27,11 @@
                         <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePasswordVisibility()"></i>
                       </div>
                     
-                    <button type="submit">Login</button>
+                      <button type="submit" [disabled]="isLoading">Login</button>
+                      <!-- Loading Spinner -->
+                      <div *ngIf="isLoading" class="loading-spinner">
+                          <div class="spinner"></div>
+                      </div>
                 </form>
                 <p>Don't have an account? <a class="sign-up" routerLink="/signup">Sign Up</a></p>
             </div>

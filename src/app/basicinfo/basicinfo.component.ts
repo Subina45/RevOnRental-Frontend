@@ -37,6 +37,7 @@ export class BasicinfoComponent {
   };
 
   suggestions: any[] = []; // To hold address suggestions
+  isLoading = false; //Loading state
 
   constructor(
     private authService: AuthService,
@@ -119,6 +120,7 @@ export class BasicinfoComponent {
 
   onSubmit(): void {
     console.log('Business Data before submission:', this.businessData);
+    this.isLoading = true; // Set loading to true when login starts
   
     const formData = new FormData();
   
@@ -165,7 +167,11 @@ export class BasicinfoComponent {
       this.router.navigate(['/login']);
     },(err) => {
       console.error('Failed to register business', err);
-    })
+    },
+    () => {
+      this.isLoading = false; // Set loading to false after login completes
+    }
+  );
     
   }
 }
