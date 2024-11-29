@@ -23,32 +23,33 @@
       <nav class="col-lg-2 col-md-3 col-sm-12 sidebar d-flex flex-column p-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link text-white" (click)="navigateTo('/dashboard')"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
+            <a class="nav-link text-white" (click)="navigateTo('/dashboard')"><i class="fas fa-tachometer-alt me-2"></i>
+              Dashboard</a>
           </li>
-          
+
           <li class="nav-item">
-            <a class="nav-link text-white" (click)="navigateTo('/booking')"><i class="fas fa-calendar-check me-2"></i> Booking</a>
+            <a class="nav-link text-white" (click)="navigateTo('/booking')"><i class="fas fa-calendar-check me-2"></i>
+              Booking</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-white" (click)="navigateTo('/vehicle')"><i class="fas fa-car me-2"></i> Vehicles</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" (click)="navigateTo('/businessnotification')"><i class="fas fa-bell me-2"></i>
+            <a class="nav-link text-white" (click)="navigateTo('/businessnotification')"><i
+                class="fas fa-bell me-2"></i>
               Notifications</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" (click)="navigateTo('/businesshistory')"><i class="fas fa-history me-2"></i> History</a>
+            <a class="nav-link text-white" (click)="navigateTo('/businesshistory')"><i class="fas fa-history me-2"></i>
+              History</a>
           </li>
         </ul>
       </nav>
 
-
-
-      <!-- Main Content -->
       <!-- Main Content -->
       <div class="col-md-10 offset-md-2 mt-5">
         <router-outlet></router-outlet>
-        
+
         <!-- Cars Section -->
         <div class="vehicle-section mb-5">
           <div class="d-flex justify-content-between align-items-center mb-4">
@@ -153,16 +154,16 @@
                     <a class="dropdown-item text-danger" (click)="openDeleteModal(car.id)">Delete</a>
                   </li>
                 </ul>
-                <img [src]="car.photo" alt="{{ car.name }}" class="card-img-top img-fluid small-img" />
-
+                <img *ngIf="car.photoUrl" [src]="car.photoUrl" alt="{{ car.brand }} - {{ car.model }}"
+                  class="card-img-top img-fluid small-img" />
                 <div class="card-body">
-                  <h5 class="card-title">{{ car.name }}</h5>
+                  <h5 class="card-title">{{ car.brand }} - {{ car.model }}</h5>
                   <p class="mb-2">
-                    <span class="badge bg-secondary">Quantity: {{ car.quantity }}</span>
+                    <span class="badge bg-secondary">Quantity: {{ car.totalQuantity }}</span>
                   </p>
                   <p class="availability-text">
-                    <span [ngStyle]="{ color: car.available ? 'green' : 'red' }">
-                      Availability: {{ car.available ? 'Yes' : 'No' }}
+                    <span [ngStyle]="{ color: car.availabilityStatus ? 'green' : 'red' }">
+                      Availability: {{ car.availabilityStatus ? 'Yes' : 'No' }}
                     </span>
                   </p>
                   <button class="btn btn-primary w-100" (click)="viewMore(car)">
@@ -181,6 +182,7 @@
         </div>
         <app-viewdetailpopup [vehicle]="selectedVehicle" [showPopup]="showPopup" (close)="closePopup()">
         </app-viewdetailpopup>
+
         <!-- Bikes Section -->
         <div class="vehicle-section mb-5">
           <div class="d-flex justify-content-between align-items-center mb-4">
@@ -208,22 +210,21 @@
                     <a class="dropdown-item text-danger" (click)="openDeleteModal(bike.id)">Delete</a>
                   </li>
                 </ul>
-                <img [src]="bike.photo" alt="{{ bike.name }}" class="card-img-top img-fluid small-img" />
+                <img *ngIf="bike.photoUrl" [src]="bike.photoUrl" alt="{{ bike.brand }} - {{ bike.model }}"
+                  class="card-img-top img-fluid small-img" />
                 <div class="card-body">
-                  <h5 class="card-title">{{ bike.name }}</h5>
+                  <h5 class="card-title">{{ bike.brand }} - {{ bike.model }}</h5>
                   <p class="mb-2">
-                    <span class="badge bg-secondary">Quantity: {{ bike.quantity }}</span>
+                    <span class="badge bg-secondary">Quantity: {{ bike.totalQuantity }}</span>
                   </p>
                   <p class="availability-text">
-                    <span [ngStyle]="{ color: bike.available ? 'green' : 'red' }">
-                      Availability: {{ bike.available ? 'Yes' : 'No' }}
+                    <span [ngStyle]="{ color: bike.availabilityStatus ? 'green' : 'red' }">
+                      Availability: {{ bike.availabilityStatus ? 'Yes' : 'No' }}
                     </span>
                   </p>
                   <button class="btn btn-primary w-100" (click)="viewMore(bike)">
                     View Detailed Info
                   </button>
-
-
                 </div>
               </div>
             </div>
@@ -237,7 +238,7 @@
           </app-viewdetailpopup>
         </div>
 
-        <!-- Cars Section -->
+        <!-- Bicycle Section -->
         <div class="vehicle-section mb-5">
           <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="section-title">Bicycles</h2>
@@ -264,15 +265,16 @@
                     <a class="dropdown-item text-danger" (click)="openDeleteModal(bicycle.id)">Delete</a>
                   </li>
                 </ul>
-                <img [src]="bicycle.photo" alt="{{ bicycle.name }}" class="card-img-top img-fluid small-img" />
+                <img *ngIf="bicycle.photoUrl" [src]="bicycle.photoUrl" alt="{{ bicycle.brand }} - {{ bicycle.model }}"
+                  class="card-img-top img-fluid small-img" />
                 <div class="card-body">
-                  <h5 class="card-title">{{ bicycle.name }}</h5>
+                  <h5 class="card-title">{{ bicycle.brand }} - {{ bicycle.model }}</h5>
                   <p class="mb-2">
-                    <span class="badge bg-secondary">Quantity: {{ bicycle.quantity }}</span>
+                    <span class="badge bg-secondary">Quantity: {{ bicycle.totalQuantity }}</span>
                   </p>
                   <p class="availability-text">
-                    <span [ngStyle]="{ color: bicycle.available ? 'green' : 'red' }">
-                      Availability: {{ bicycle.available ? 'Yes' : 'No' }}
+                    <span [ngStyle]="{ color: bicycle.availabilityStatus ? 'green' : 'red' }">
+                      Availability: {{ bicycle.availabilityStatus ? 'Yes' : 'No' }}
                     </span>
                   </p>
                   <button class="btn btn-primary w-100" (click)="viewMore(bicycle)">
@@ -295,7 +297,7 @@
     </div>
   </div>
 
-  
+
 
 </body>
 
