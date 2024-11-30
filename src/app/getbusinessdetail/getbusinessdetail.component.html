@@ -1,0 +1,74 @@
+<body>
+    <!-- Main Container -->
+    <div class="container my-5">
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col text-center">
+                <h1>Vehicle Details</h1>
+            </div>
+        </div>
+
+        <!-- Vehicle Images with Rates -->
+        <div class="row mb-5">
+            <h3 class="text-muted mb-4 text-center">
+                <strong>Threshold Price:</strong> Rs 2000
+            </h3>
+
+            <div class="col-md-4" *ngFor="let vehicle of vehicles" (click)="selectVehicle(vehicle)">
+                <div class="car-item text-center border p-3 rounded shadow-sm position-relative selectable-card" 
+                     [class.selected-card]="selectedVehicle === vehicle">
+                    <!-- Badge for Vehicle Name -->
+                    <span class="badge position-absolute top-0 start-50 translate-middle-x mt-2"style="background-color:#863884; color: white;">
+                        {{ vehicle.name }}
+                    </span>
+
+                    <!-- Vehicle Image -->
+                    <img *ngIf="vehicle?.imgUrl" [src]="vehicle.imgUrl" 
+                        alt="{{ vehicle?.name }}" 
+                        class="vehicle-image img-fluid rounded mb-3 mt-4">
+
+                    <!-- Rates -->
+                    <p><strong>Hourly Rate:</strong> Rs {{ vehicle.hourlyRate }}</p>
+                    <p><strong>Half Day Rate:</strong> Rs {{ vehicle.halfDayRate }}</p>
+                    <p><strong>Full Day Rate:</strong> Rs {{ vehicle.fullDayRate }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Details Section (Static) -->
+        <div class="row mt-4 p-4 border rounded bg-light shadow-sm">
+            <div class="col">
+                <h3>Business Details</h3>
+                <div class="detail-row mb-3">
+                    <span class="label"><strong>Distance:</strong></span>
+                    <span class="value"> 1 km</span>
+                </div>
+                <div class="detail-row mb-3">
+                    <span class="label"><strong>Rating:</strong></span>
+                    <span class="value rating"> 4.5 ★</span>
+                </div>
+                <div class="detail-row mb-3">
+                    <span class="label"><strong>Review:</strong></span>
+                    <span class="value"> Flexible and convenient rental options.</span>
+                </div>
+                <div class="detail-row mb-3">
+                    <span class="label"><strong>Number:</strong></span>
+                    <span class="value"> 9876543210</span>
+                </div>
+                <div class="detail-row mb-3">
+                    <span class="label"><strong>Address:</strong></span>
+                    <span class="value"> Mahendrapul</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Book Now Button -->
+        <div class="row mt-4">
+            <div class="col text-center">
+                <button class="btn btn-primary btn-lg shadow">
+                    <strong>Book Now</strong>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>

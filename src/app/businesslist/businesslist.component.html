@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,66 +46,9 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal-backdrop" *ngIf="showModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{ selectedVehicle?.name }} Details</h5>
-                <button class="btn-close" (click)="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <!-- Threshold Price Section -->
-                <div class="threshold-price" *ngIf="selectedVehicle">
-                    <p><strong>Threshold Price:</strong> Rs {{ selectedVehicle.thresholdPrice || 2000 }}</p>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <div class="car-item text-center">
-                        <img *ngIf="selectedVehicle?.imgUrl" [src]="selectedVehicle?.imgUrl"
-                            alt="{{ selectedVehicle?.name }}" class="vehicle-image img-fluid rounded">
-                        <p class="car-price">Rs {{ selectedVehicle?.price1 || 'N/A' }}</p>
-                    </div>
-                    <div class="car-item text-center">
-                        <img *ngIf="selectedVehicle?.imgUrl" [src]="selectedVehicle?.imgUrl"
-                            alt="{{ selectedVehicle?.name }}" class="vehicle-image img-fluid rounded">
-                        <p class="car-price">Rs {{ selectedVehicle?.price1 || 'N/A' }}</p>
-                    </div>
-                    <div class="car-item text-center">
-                        <img *ngIf="selectedVehicle?.imgUrl" [src]="selectedVehicle?.imgUrl"
-                            alt="{{ selectedVehicle?.name }}" class="vehicle-image img-fluid rounded">
-                        <p class="car-price">Rs {{ selectedVehicle?.price1 || 'N/A' }}</p>
-                    </div>
-                </div>
-                <!-- Business Details Section -->
-    <div class="business-details mt-4">
-        <div class="detail-row">
-            <span class="label"><strong>Distance</strong></span>
-            <span class="value">{{ selectedVehicle?.distance || 'N/A' }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="label"><strong>Rating</strong></span>
-            <span class="value">{{ selectedVehicle?.rating || 'N/A' }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="label"><strong>Description</strong></span>
-            <span class="value">{{ selectedVehicle?.description || 'N/A' }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="label"><strong>Number</strong></span>
-            <span class="value">{{ selectedVehicle?.phoneNumber || 'N/A' }}</span>
-        </div>
-        <div class="detail-row">
-            <span class="label"><strong>Email</strong></span>
-            <span class="value">{{ selectedVehicle?.email || 'N/A' }}</span>
-        </div>
-    </div>
-            </div>
-            <div class="modal-footer">
-                <button (click)="openPaymentModal()" class="btn btn-secondary">Book Now</button>
-            </div>
-        </div>
-    </div>
+   
 
-    <div class="modal-backdrop" *ngIf="showPaymentModal">
+    <!-- <div class="modal-backdrop" *ngIf="showPaymentModal">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
@@ -134,7 +76,7 @@
                 <button class="btn-proceed" (click)="processPayment()">Proceed to Pay</button>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

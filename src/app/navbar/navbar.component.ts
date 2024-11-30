@@ -85,8 +85,8 @@ export class NavbarComponent {
   editProfile(): void {
     alert('Edit profile feature is coming soon!');
   }
-  forgotPassword(): void {
-    alert('Edit profile feature is coming soon!');
+  notification(): void {
+    this.router.navigate(['/usernotification']);
   }
   viewBookingHistory(): void {
     // alert('Edit profile feature is coming soon!');

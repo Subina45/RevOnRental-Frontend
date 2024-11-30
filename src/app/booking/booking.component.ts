@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
 export interface Booking {
   id: number;                // Add this property
@@ -14,12 +15,13 @@ export interface Booking {
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [RouterLink,RouterOutlet,CommonModule],
+  imports: [RouterLink,CommonModule, FormsModule],
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.css']
 })
 export class BookingComponent {
-  
+  selectedColor: string = '#28a745'; // Green for Confirmed
+selectedTextColor: string = 'white'; // White text
  
   bookings: Booking[] = [
     {
@@ -62,4 +64,18 @@ export class BookingComponent {
     console.log("Rejected booking with ID:", bookingId);
     // Implement the logic to reject the booking
   }  
+
+  markAsCompleted(bookingId: number): void {
+    
+    // Business user marks the booking as 'Completed'
+    console.log(`Booking ID ${bookingId} marked as Completed`);
+  
+    
+    // Optionally, make an API call to update the status on the server
+    // this.bookingService.updateStatus(bookingId, newStatus).subscribe();
+  }
+  onStatusChange(booking: any) {
+    console.log('Status changed to:', booking.status);
+    // Add your logic here (e.g., make an API call to save the updated status)
+  }
 }

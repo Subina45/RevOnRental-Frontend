@@ -37,7 +37,7 @@
               <th>End Date</th>
               <th>Total Price</th>
               <th>Status</th>
-              <th>Actions</th> <!-- New column for Accept/Reject actions -->
+              
             </tr>
           </thead>
           <tbody>
@@ -51,23 +51,23 @@
               <td>{{ booking.endDate | date: 'shortDate' }}</td>
               <td>{{ booking.totalPrice | currency: 'NPR' }}</td>
               <td>
-                <span class="badge" [ngClass]="{
-              'bg-success': booking.status === 'Confirmed',
-              'bg-warning': booking.status === 'Pending',
-              'bg-danger': booking.status === 'Cancelled'
-            }">
-                  {{ booking.status }}
-                </span>
+                <ng-container *ngIf="booking.status === 'Confirmed'; else defaultStatus">
+                  <!-- Dropdown for 'Confirmed' status -->
+                  <select class="form-select form-select-sm bg-success text-white"
+                    (change)="markAsCompleted(booking.id)">
+                    <option value="Confirmed" selected>Confirmed</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </ng-container>
+                <ng-template #defaultStatus>
+                  <select class="form-select status-dropdown" [(ngModel)]="booking.status" (change)="onStatusChange(booking)">
+                    <option value="Confirmed" >Confirmed</option>
+                    <option value="Pending" >Pending</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </ng-template>
               </td>
-              <td>
-                <!-- Accept and Reject Icons -->
-                <button class="btn btn-success btn-sm me-1" (click)="acceptBooking(booking.id)" title="Accept Booking">
-                  <i class="fas fa-check"></i>
-                </button>
-                <button class="btn btn-danger btn-sm" (click)="rejectBooking(booking.id)" title="Reject Booking">
-                  <i class="fas fa-times"></i>
-                </button>
-              </td>
+              
             </tr>
           </tbody>
         </table>

@@ -1,6 +1,7 @@
 
 import { CommonModule, NgFor } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 
 interface Vehicle {
@@ -35,16 +36,22 @@ export class BusinesslistComponent {
     { name: 'Best Rental', distance: '2.1 km', rating: 4.5, description: 'Best value rental service in the city.', email: 'bestrental@gmail.com', phoneNumber: 987654321, imgUrl: 'assets/images/car.png', thresholdPrice: 2000, price1: 2000 },
     { name: 'A1 Rental', distance: '1.2 km', rating: 4.3, description: 'Affordable and reliable car rental service.', email: 'a1rental@gmail.com', phoneNumber: 987654321, imgUrl: 'assets/images/car.png', thresholdPrice: 2000, price1: 2000 },
   ];
+  constructor(
+    private router: Router
+  ) {
+    
+  }
 
   showModal = false;
-  showPaymentModal = false;
+  // showPaymentModal = false;
   selectedVehicle?: Vehicle;
 
   paymentMethod: string = '';
 
   viewMore(vehicle: Vehicle): void {
     this.selectedVehicle = vehicle;
-    this.showModal = true;
+    this.router.navigate(['/businessdetail']);
+    
   }
 
   closeModal(): void {
@@ -53,26 +60,26 @@ export class BusinesslistComponent {
 
   // for payment
 
-  openPaymentModal(): void {
-    this.showModal = false;
-    this.showPaymentModal = true;
-  }
+  // openPaymentModal(): void {
+  //   this.showModal = false;
+  //   this.showPaymentModal = true;
+  // }
 
-  closePaymentModal(): void {
-    this.showPaymentModal = false;
-  }
+  // closePaymentModal(): void {
+  //   this.showPaymentModal = false;
+  // }
 
-  selectPaymentMethod(method: string): void {
-    this.paymentMethod = method;
-  }
+  // selectPaymentMethod(method: string): void {
+  //   this.paymentMethod = method;
+  // }
 
-  processPayment(): void {
-    if (this.paymentMethod === '') {
-      alert('Please select a payment method.');
-      return;
-    }
-    alert(`Payment processed using: ${this.paymentMethod}`);
-    this.closePaymentModal();
-  }
+  // processPayment(): void {
+  //   if (this.paymentMethod === '') {
+  //     alert('Please select a payment method.');
+  //     return;
+  //   }
+  //   alert(`Payment processed using: ${this.paymentMethod}`);
+  //   this.closePaymentModal();
+  // }
 
 }

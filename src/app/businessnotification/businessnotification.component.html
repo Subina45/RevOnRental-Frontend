@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,27 +16,27 @@
 
   <!-- Custom CSS for Primary Color and Enhancements -->
   <style>
-  
- 
     .notification-card {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 0.5rem;
-        transition: transform 0.2s;
-      }
-      .notification-card:hover {
-        transform: scale(1.02);
-      }
-      .notification-icon {
-        font-size: 2rem;
-      }
-      .timestamp {
-        font-size: 0.85rem;
-        color: gray;
-      }
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 0.5rem;
+      transition: transform 0.2s;
+    }
 
+    .notification-card:hover {
+      transform: scale(1.02);
+    }
 
+    .notification-icon {
+      font-size: 2rem;
+    }
+
+    .timestamp {
+      font-size: 0.85rem;
+      color: gray;
+    }
   </style>
 </head>
+
 <body>
   <div class="container-fluid">
     <div class="row">
@@ -43,95 +44,91 @@
       <nav class="col-lg-2 col-md-3 col-sm-12 sidebar d-flex flex-column p-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link text-white" (click)="navigateTo('/dashboard')"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
+            <a class="nav-link text-white" (click)="navigateTo('/dashboard')"><i class="fas fa-tachometer-alt me-2"></i>
+              Dashboard</a>
           </li>
-          
+
           <li class="nav-item">
-            <a class="nav-link text-white" (click)="navigateTo('/booking')"><i class="fas fa-calendar-check me-2"></i> Booking</a>
+            <a class="nav-link text-white" (click)="navigateTo('/booking')"><i class="fas fa-calendar-check me-2"></i>
+              Booking</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-white" (click)="navigateTo('/vehicle')"><i class="fas fa-car me-2"></i> Vehicles</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" (click)="navigateTo('/businessnotification')"><i class="fas fa-bell me-2"></i>
+            <a class="nav-link text-white" (click)="navigateTo('/businessnotification')"><i
+                class="fas fa-bell me-2"></i>
               Notifications</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-white" (click)="navigateTo('/businesshistory')"><i class="fas fa-history me-2"></i> History</a>
+            <a class="nav-link text-white" (click)="navigateTo('/businesshistory')"><i class="fas fa-history me-2"></i>
+              History</a>
           </li>
         </ul>
       </nav>
-        <!-- Main Content -->
-        <div class="main-content col-md-10 offset-md-2">
-            <!-- <h1 class="mb-4 text-center">Notifications</h1> -->
-            <div class="row gy-4">
-              <!-- Notification 1 -->
-              <div class="col-12">
-                <div class="card notification-card p-3">
-                  <div class="d-flex align-items-start">
-                    <i class="bi bi-car-front-fill notification-icon text-success me-3"></i>
-                    <div>
-                      <h6 class="mb-1">New Booking Request</h6>
-                      <p class="mb-0">Tina has requested a vehicle for December 10, 2024.</p>
-                      <small class="timestamp">2 minutes ago</small>
-                    </div>
+      <!-- Main Content -->
+      <div class="main-content col-md-10 offset-md-2">
+        <!-- <h1 class="mb-4 text-center">Notifications</h1> -->
+        <div class="row gy-4">
+          <!-- Notification 1 -->
+          <div class="col-12 p-3 mb-4">
+            <div *ngFor="let request of bookingRequests" class="card notification-card p-3 mb-4">
+              <div class="d-flex justify-content-between align-items-start">
+                <!-- Notification content -->
+                <div class="d-flex align-items-start">
+                  <i class="bi bi-car-front-fill notification-icon text-success me-3"></i>
+                  <div>
+                    <h6 class="mb-1">New Booking Request</h6>
+                    <p class="mb-0">{{request.userName}} is trying to rent a {{request.vehicleName}} from {{request.startDate}} to {{request.endDate}}</p>
+                    <small class="timestamp">2 minutes ago</small>
                   </div>
                 </div>
-              </div>
-          
-              <!-- Notification 2 -->
-              <div class="col-12">
-                <div class="card notification-card p-3">
-                  <div class="d-flex align-items-start">
-                    <i class="bi bi-currency-dollar notification-icon text-info me-3"></i>
-                    <div>
-                      <h6 class="mb-1">Payment Received</h6>
-                      <p class="mb-0">Sarah has completed the payment for her booking.</p>
-                      <small class="timestamp">15 minutes ago</small>
-                    </div>
-                  </div>
+                <!-- Accept and Reject Icons -->
+                <div class="acceptreject d-flex flex-column align-items-center gap-2">
+                  <button class="btn btn-success btn-sm w-100" style="min-width: 100px;" title="Accept Booking">Accept
+                    <i class="fas fa-check"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm w-100" style="min-width: 100px;" title="Reject Booking">Reject
+                    <i class="fas fa-times"></i>
+                  </button>
                 </div>
               </div>
-          
-              <!-- Notification 3 -->
-              <div class="col-12">
-                <div class="card notification-card p-3">
-                  <div class="d-flex align-items-start">
-                    <i class="bi bi-x-circle-fill notification-icon text-danger me-3"></i>
-                    <div>
-                      <h6 class="mb-1">Booking Cancelled</h6>
-                      <p class="mb-0">Moana has cancelled his booking for November 25, 2024.</p>
-                      <small class="timestamp">30 minutes ago</small>
-                    </div>
-                  </div>
-                </div>
-              </div>
-                
-                    <!-- Notification 2 -->
-              <div class="col-12">
-                <div class="card notification-card p-3">
-                  <div class="d-flex align-items-start">
-                    <i class="bi bi-currency-dollar notification-icon text-info me-3"></i>
-                    <div>
-                      <h6 class="mb-1">Payment Received</h6>
-                      <p class="mb-0">Sarah has completed the payment for her booking.</p>
-                      <small class="timestamp">15 minutes ago</small>
-                    </div>
-                  </div>
+            </div>
+            <!-- Notification 2 -->
+          <div class="col-12">
+            <div *ngFor="let request of bookingRequests" class="card notification-card p-3 mb-4">
+              <div class="d-flex align-items-start">
+                <i class="bi bi-currency-dollar notification-icon text-info me-3"></i>
+                <div>
+                  <h6 class="mb-1">Payment Received</h6>
+                  <p class="mb-0">{{request.vehicleName}} has been paid for by {{request.userName}}</p>
+                  <small class="timestamp">15 minutes ago</small>
                 </div>
               </div>
             </div>
           </div>
-          
-      </div>
-    </div>
-  
-    <router-outlet></router-outlet>
+            
+          </div>
 
-<!-- Bootstrap JS and Popper.js -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eNf13dJyDpZWUUjrRf9v5VxfsHq1EIZOUihL+E7DaiMCbQWsgs5hbx92YZHnPfbo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-qQ3D3q9B91Tl97uNT+EEVoPxxfpSoXiFuH8zT4iCfyMy24VZQU68UMi81wgbbsio" crossorigin="anonymous"></script>
+          
+
+          
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <router-outlet></router-outlet>
+
+  <!-- Bootstrap JS and Popper.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+    integrity="sha384-eNf13dJyDpZWUUjrRf9v5VxfsHq1EIZOUihL+E7DaiMCbQWsgs5hbx92YZHnPfbo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-qQ3D3q9B91Tl97uNT+EEVoPxxfpSoXiFuH8zT4iCfyMy24VZQU68UMi81wgbbsio"
+    crossorigin="anonymous"></script>
 
 </body>
-</html>
 
+</html>
