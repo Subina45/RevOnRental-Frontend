@@ -39,9 +39,6 @@
                     <li class="nav-item" routerLinkActive="active">
                         <a class="nav-link" routerLink="home">Home</a>
                     </li>
-                    <li class="nav-item" routerLinkActive="">
-                        <a class="nav-link" routerLink="usernotification">Notification</a>
-                    </li>
                     <li class="nav-item" routerLinkActive="active">
                         <a class="nav-link" routerLink="contact">Contact</a>
                     </li>
@@ -54,6 +51,9 @@
                 </ul>
                 <!-- Actions (Search, Signup/Login/Logout/Profile) -->
                 <div class="d-flex align-items-center">
+                    <button class="btn btn-notification " type="button" routerLink="usernotification">
+                        <i class="fas fa-bell"></i>
+                    </button>
                     <!-- Search Button -->
                     <button class="btn btn-link text-primary" type="button" routerLink="search">
                         <i class="fas fa-search"></i>

@@ -78,6 +78,22 @@ body {
     margin-right: 10px; /* Add a gap between the icon and button */
 }
 
+/* Search button */
+.d-flex .btn-notification {
+  color: var(--primary-color);
+  font-size: 1.4rem;
+  background-color: transparent;
+  border: none;
+  padding: 5px 10px; /* Padding around the icon */
+  margin-right: 2px; /* Add a gap between the icon and button */
+}
+
+/* Search button */
+.d-flex .btn-notification:hover {
+  color: var(--secondary-color);
+
+}
+
 /* Hover effect on search button */
 .d-flex .btn-link:hover {
     color: var(--primary-color);
