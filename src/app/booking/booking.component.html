@@ -51,22 +51,37 @@
               <td>{{ booking.endDate | date: 'shortDate' }}</td>
               <td>{{ booking.totalPrice | currency: 'NPR' }}</td>
               <td>
-                <ng-container *ngIf="booking.status === 'Confirmed'; else defaultStatus">
+                <!-- Handling Confirmed Status -->
+                <ng-container *ngIf="booking.status === 'Confirmed'; else otherStatuses">
                   <!-- Dropdown for 'Confirmed' status -->
-                  <select class="form-select form-select-sm bg-success text-white"
-                    (change)="markAsCompleted(booking.id)">
+                  <select class="form-select form-select-sm bg-success text-white" (change)="markAsCompleted(booking.id)">
                     <option value="Confirmed" selected>Confirmed</option>
                     <option value="Completed">Completed</option>
                   </select>
                 </ng-container>
-                <ng-template #defaultStatus>
-                  <select class="form-select status-dropdown" [(ngModel)]="booking.status" (change)="onStatusChange(booking)">
-                    <option value="Confirmed" >Confirmed</option>
-                    <option value="Pending" >Pending</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
+              
+                <!-- Handling Accepted Status -->
+                <ng-template #otherStatuses>
+                  <ng-container *ngIf="booking.status === 'Accepted'; else defaultStatus">
+                    <!-- Dropdown for 'Accepted' status -->
+                    <select class="form-select form-select-sm bg-primary text-white" (change)="markAsRejected(booking.id)">
+                      <option value="Accepted" selected>Accepted</option>
+                      <option value="Rejected">Rejected</option>
+                    </select>
+                  </ng-container>
+              
+                  <!-- Handling other statuses -->
+                  <ng-template #defaultStatus>
+                    <select class="form-select status-dropdown" [(ngModel)]="booking.status" (change)="onStatusChange(booking)">
+                      <option value="Confirmed">Confirmed</option>
+                      <option value="Pending">Pending</option>
+                      <option value="Accepted">Accepted</option>
+                      <!-- <option value="Cancelled">Cancelled</option> -->
+                    </select>
+                  </ng-template>
                 </ng-template>
               </td>
+              
               
             </tr>
           </tbody>

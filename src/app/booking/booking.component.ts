@@ -74,8 +74,12 @@ selectedTextColor: string = 'white'; // White text
     // Optionally, make an API call to update the status on the server
     // this.bookingService.updateStatus(bookingId, newStatus).subscribe();
   }
+  markAsRejected(bookingId: number) {
+    // Your logic here, e.g., make an API call to mark the booking as rejected
+    console.log('Booking marked as Rejected:', bookingId);
+  }
   onStatusChange(booking: any) {
     console.log('Status changed to:', booking.status);
-    // Add your logic here (e.g., make an API call to save the updated status)
+   
   }
 }
