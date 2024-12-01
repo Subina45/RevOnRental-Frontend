@@ -18,6 +18,7 @@ import { VehicleService } from '../aservice/vehicle.service';
 })
 export class NavbarComponent {
   showProfileModal = false; // Initially hidden
+  showEditProfileModal = false; // For edit profile modal
   menuOpen: boolean = false;
   isLoggedIn: boolean = false;
   userProfile: any = null; // User profile data
@@ -34,17 +35,17 @@ export class NavbarComponent {
   ) { }
 
   ngOnInit(): void {
-    const userId = 1061; 
+    const userId = 1061;
     this.loginStateService.isLoggedIn.subscribe((status) => {
       const token = this.authservice.getToken();
-    if (!token) {
-      console.error('No authentication token found.');
-      throwError(() => new Error('User is not authenticated.'));
-    }else{
-      this.isLoggedIn = status;
-      this.fetchUserProfile(userId); // Fetch profile if logged in
-    }
-     
+      if (!token) {
+        console.error('No authentication token found.');
+        throwError(() => new Error('User is not authenticated.'));
+      } else {
+        this.isLoggedIn = status;
+        this.fetchUserProfile(userId); // Fetch profile if logged in
+      }
+
     });
   }
   onLogout(): void {
@@ -63,7 +64,7 @@ export class NavbarComponent {
 
 
   fetchUserProfile(userId: number): void {
-    
+
     this.vehicleservice.getUserDetails(userId).subscribe(
       (response) => {
         this.userProfile = response; // Bind user profile data
@@ -75,6 +76,7 @@ export class NavbarComponent {
   }
   // Function to open the profile modal
   openProfileModal(): void {
+    this.showEditProfileModal = false; // Ensure edit modal is hidden
     this.showProfileModal = true;
   }
   // Function to close the profile modal
@@ -82,8 +84,22 @@ export class NavbarComponent {
     this.showProfileModal = false;
   }
 
+  openEditProfileModal(): void {
+    this.showProfileModal = false; // not to open both modal at the same time
+    this.showEditProfileModal = true;
+  }
+
+  closeEditProfileModal(): void {
+    this.showEditProfileModal = false;
+  }
+  // Method to save the edited profile data
+  saveProfile(): void {
+    console.log('Profile changes saved:', this.userProfile);
+    this.closeEditProfileModal();
+  }
+
   editProfile(): void {
-    alert('Edit profile feature is coming soon!');
+    this.openEditProfileModal();
   }
   // notification(): void {
   //   this.router.navigate(['/usernotification']);
