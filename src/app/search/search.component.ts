@@ -3,6 +3,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, NgZone, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { SignalrService } from '../core-services/signalr.services';
 
 @Component({
   selector: 'app-search',
@@ -25,7 +26,12 @@ export class SearchComponent {
     destinationDate: string = '2024-12-12';
     destinationTime: string = '12:00';
 
-  constructor(private http: HttpClient, private ngZone: NgZone) {}
+  constructor(private http: HttpClient, private ngZone: NgZone,
+    private signalrService: SignalrService
+  ) {
+    //this.signalrService.onNotificationCreateSignal();
+    //this.signalrService.sendMessage('sumitra','khadka');
+  }
 
   // Method to select a vehicle type
   selectVehicle(vehicle: string): void {

@@ -4,6 +4,7 @@ import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { AuthService } from '../aservice/auth.service';
 import { LoginstateService } from '../aservice/loginstate.service';
 import { CommonModule } from '@angular/common';
+import { SignalrService } from '../core-services/signalr.services';
 
 @Component({
   selector: 'app-login',
@@ -26,8 +27,13 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private loginStateService: LoginstateService
-  ) {}
+    private loginStateService: LoginstateService,
+            private signalrService: SignalrService,
+
+  ) {
+    
+
+  }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -42,6 +48,7 @@ export class LoginComponent {
         this.authService.setToken(res.accessToken);
         this.loginStateService.setLoginStatus(true); // Update login status
         this.router.navigate(['/search']); 
+        
         // const role=this.authService.getLoggedInRole();
         // if(role==='user'){
         //   this.router.navigate(['/search']); // Navigate after login
@@ -75,4 +82,7 @@ export class LoginComponent {
     //   }
     // });
   }
+
+
+  
 }
