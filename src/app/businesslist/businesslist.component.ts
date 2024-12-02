@@ -1,10 +1,13 @@
-
-import { CommonModule, NgFor } from '@angular/common';
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { VehicleService } from '../aservice/vehicle.service';
+import { CommonModule } from '@angular/common';
+import { SearchDataService } from '../aservice/searchData.spec';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BusinessService } from '../aservice/business.service';
 
 interface Vehicle {
-  name: string;
+  businessId: number;
+  businessName: string;
   distance: string;
   rating: number;
   description: string;
@@ -18,61 +21,78 @@ interface Vehicle {
 @Component({
   selector: 'app-businesslist',
   standalone: true,
-  imports: [NgFor, CommonModule],
+  imports: [CommonModule],
   templateUrl: './businesslist.component.html',
-  styleUrl: './businesslist.component.css'
+  styleUrls: ['./businesslist.component.css'],
 })
-export class BusinesslistComponent {
-  
-  vehicles: Vehicle[] = [
-    { name: 'A1 Rental', distance: '1.2 km', rating: 4.3, description: 'Affordable and reliable car rental service.', email: 'a1rental@gmail.com', phoneNumber: 987654321, imgUrl: 'assets/images/car.png', thresholdPrice: 2000, price1: 2000 },
-    { name: 'Flex Ride', distance: '1 km', rating: 4.2, description: 'Flexible and convenient rental options.', email: 'flexrental@gmail.com', phoneNumber: 987654321, imgUrl: 'assets/images/car.png', thresholdPrice: 2000, price1: 2000 },
-    { name: 'Go Fast Rental', distance: '2 km', rating: 4.3, description: 'Fast and easy car rentals.', email: 'gofastrental@gmail.com', phoneNumber: 987654321, imgUrl: 'assets/images/car.png', thresholdPrice: 2000, price1: 2000 },
-    { name: 'Best Rental', distance: '2.1 km', rating: 4.5, description: 'Best value rental service in the city.', email: 'bestrental@gmail.com', phoneNumber: 987654321, imgUrl: 'assets/images/car.png', thresholdPrice: 2000, price1: 2000 },
-    { name: 'Go Fast Rental', distance: '2 km', rating: 4.3, description: 'Fast and easy car rentals.', email: 'gofastrental@gmail.com', phoneNumber: 987654321, imgUrl: 'assets/images/car.png', thresholdPrice: 2000, price1: 2000 },
-    { name: 'Flex Ride', distance: '1 km', rating: 4.2, description: 'Flexible and convenient rental options.', email: 'flexrental@gmail.com', phoneNumber: 987654321, imgUrl: 'assets/images/car.png', thresholdPrice: 2000, price1: 2000 },
-    { name: 'A1 Rental', distance: '1.2 km', rating: 4.3, description: 'Affordable and reliable car rental service.', email: 'a1rental@gmail.com', phoneNumber: 987654321, imgUrl: 'assets/images/car.png', thresholdPrice: 2000, price1: 2000 },
-    { name: 'Best Rental', distance: '2.1 km', rating: 4.5, description: 'Best value rental service in the city.', email: 'bestrental@gmail.com', phoneNumber: 987654321, imgUrl: 'assets/images/car.png', thresholdPrice: 2000, price1: 2000 },
-    { name: 'A1 Rental', distance: '1.2 km', rating: 4.3, description: 'Affordable and reliable car rental service.', email: 'a1rental@gmail.com', phoneNumber: 987654321, imgUrl: 'assets/images/car.png', thresholdPrice: 2000, price1: 2000 },
-  ];
+export class BusinesslistComponent implements OnInit {
+  vehicles: Vehicle[] = [];
+  searchData: any = null; // Add a property to hold search data
+
+  constructor(
+    private vehicleService: VehicleService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private searchDataService: SearchDataService,
+    private businessService: BusinessService
+  ) {}
+
+  ngOnInit(): void {
+    // First check URL parameters
+    this.route.queryParams.subscribe(params => {
+      if (Object.keys(params).length > 0) {
+        // If URL has parameters, use them
+        const searchData = {
+          vehicleType: parseInt(params['vehicleType']),
+          currentAddress: params['currentAddress'],
+          latitude: parseFloat(params['latitude']),
+          longitude: parseFloat(params['longitude']),
+          destinationAddress: params['destinationAddress'],
+          startDateTime: params['startDateTime'],
+          endDateTime: params['endDateTime']
+        };
+        
+        // Update the service with URL params
+        this.searchDataService.updateSearchData(searchData);
+        this.fetchVehicles(searchData);
+      } else {
+        // If no URL params, use the service data
+        this.searchDataService.searchData$.subscribe((data) => {
+          if (data) {
+            this.fetchVehicles(data);
+          }
+        });
+      }
+    });
+  }
+
+  private fetchVehicles(searchData: any) {
+    this.searchData = searchData;
+    this.vehicleService.searchVehicles(searchData).subscribe(
+      (response: any) => {
+        this.vehicles = response;
+      },
+      (error) => {
+        console.error('Error fetching vehicles:', error);
+      }
+    );
+  }
 
   showModal = false;
-  showPaymentModal = false;
+  // showPaymentModal = false;
   selectedVehicle?: Vehicle;
 
   paymentMethod: string = '';
 
   viewMore(vehicle: Vehicle): void {
-    this.selectedVehicle = vehicle;
-    this.showModal = true;
+    this.businessService.setBusinessId(vehicle.businessId);
+    // Navigate with both businessId as route param and preserve search params
+    this.router.navigate(['/businessdetail', vehicle.businessId], {
+      queryParamsHandling: 'preserve'
+    });
   }
 
   closeModal(): void {
     this.showModal = false;
   }
-
-  // for payment
-
-  openPaymentModal(): void {
-    this.showModal = false;
-    this.showPaymentModal = true;
-  }
-
-  closePaymentModal(): void {
-    this.showPaymentModal = false;
-  }
-
-  selectPaymentMethod(method: string): void {
-    this.paymentMethod = method;
-  }
-
-  processPayment(): void {
-    if (this.paymentMethod === '') {
-      alert('Please select a payment method.');
-      return;
-    }
-    alert(`Payment processed using: ${this.paymentMethod}`);
-    this.closePaymentModal();
-  }
-
 }

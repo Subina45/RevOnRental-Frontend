@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,10 +48,10 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" value="2024-12-11" class="form-control">
+                    <input type="date" [(ngModel)]="pickupDate" class="form-control">
                 </div>
                 <div class="col-md-3">
-                    <input type="time" value="12:00" class="form-control">
+                    <input type="time" [(ngModel)]="pickupTime" class="form-control">
                 </div>
             </div>
 
@@ -71,17 +70,17 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <input type="date" value="2024-12-12" class="form-control">
+                    <input type="date" [(ngModel)]="destinationDate" class="form-control">
                 </div>
                 <div class="col-md-3">
-                    <input type="time" value="12:00" class="form-control">
+                    <input type="time" [(ngModel)]="destinationTime" class="form-control">
                 </div>
             </div>
         </div>
 
         <!-- Search Button Centered Below the Search Form -->  
         <div class="text-center">
-            <button class="search btn btn-primary mt-3" routerLink="/businesslist">
+            <button class="search btn btn-primary mt-3" routerLink="/businesslist" (click)="onSubmit()">
                 Search</button>
         </div>
     </div>
@@ -94,4 +93,3 @@
 </body>
 
 </html>
-

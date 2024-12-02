@@ -1,4 +1,3 @@
-
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, NgZone } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
@@ -11,10 +10,9 @@ import { HttpClient } from '@angular/common/http';
   standalone: true,
   imports: [RouterOutlet, CommonModule, FormsModule],
   templateUrl: './basicinfo.component.html',
-  styleUrl: './basicinfo.component.css'
+  styleUrl: './basicinfo.component.css',
 })
 export class BasicinfoComponent {
-
   businessType: string = 'individual';
 
   businessData: any = {
@@ -33,19 +31,18 @@ export class BasicinfoComponent {
     nationalIdBack: null,
     bluebook: null,
     businessRegistrationDocument: null,
-    businessType: 0
+    businessType: 0,
   };
 
   suggestions: any[] = []; // To hold address suggestions
+  isLoading = false; //Loading state
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private http: HttpClient,
     private ngZone: NgZone
-
-  ) { }
-
+  ) {}
 
   toggleForm(event: any): void {
     this.businessType = event.target.value;
@@ -89,10 +86,14 @@ export class BasicinfoComponent {
       this.suggestions = [];
 
       console.log('Selected Address:', this.businessData.address);
-      console.log('Latitude:', this.businessData.latitude, 'Longitude:', this.businessData.longitude);
+      console.log(
+        'Latitude:',
+        this.businessData.latitude,
+        'Longitude:',
+        this.businessData.longitude
+      );
     });
   }
-
 
   // Event Listener for clicking outside the suggestions box
   @HostListener('document:click', ['$event'])
@@ -119,9 +120,10 @@ export class BasicinfoComponent {
 
   onSubmit(): void {
     console.log('Business Data before submission:', this.businessData);
-  
+    this.isLoading = true; // Set loading to true when login starts
+
     const formData = new FormData();
-  
+
     // Append individual or company data
     if (this.businessData.businessType === 0) {
       // Individual Type
@@ -137,12 +139,18 @@ export class BasicinfoComponent {
     } else if (this.businessData.businessType === 1) {
       // Company Type
       formData.append('businessName', this.businessData.businessName);
-      formData.append('businessRegistrationNumber', this.businessData.businessRegistrationNumber);
+      formData.append(
+        'businessRegistrationNumber',
+        this.businessData.businessRegistrationNumber
+      );
       if (this.businessData.businessRegistrationDocument) {
-        formData.append('businessRegistrationDocument', this.businessData.businessRegistrationDocument);
+        formData.append(
+          'businessRegistrationDocument',
+          this.businessData.businessRegistrationDocument
+        );
       }
     }
-  
+
     formData.append('firstName', this.businessData.firstName);
     formData.append('lastName', this.businessData.lastName);
     formData.append('email', this.businessData.email);
@@ -152,14 +160,25 @@ export class BasicinfoComponent {
     formData.append('latitude', this.businessData.latitude);
     formData.append('longitude', this.businessData.longitude);
 
-  
     // Submit the form data
-    this.authService.createBusiness(formData).subscribe((res:any)=>{
-      console.log('Business registered successfully', res);
-      this.router.navigate(['/login']);
-    },(err) => {
-      console.error('Failed to register business', err);
-    })
-    
+    this.authService.createBusiness(formData).subscribe(
+      (res: any) => {
+        console.log('Business registered successfully', res);
+
+        // if (res && res.businessId) {
+        //   // Store the businessId in local storage
+        //   localStorage.setItem('businessId', res.businessId.toString());
+        // }
+
+        this.router.navigate(['/login']);
+      },
+      (err) => {
+        this.isLoading = false;
+        console.error('Failed to register business', err);
+      },
+      () => {
+        this.isLoading = false; // Set loading to false after login completes
+      }
+    );
   }
 }

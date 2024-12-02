@@ -1,6 +1,11 @@
 import { Component, inject, NgZone, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink, RouterOutlet, Router, RouterModule } from '@angular/router';
+import {
+  RouterLink,
+  RouterOutlet,
+  Router,
+  RouterModule,
+} from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../aservice/auth.service';
@@ -9,11 +14,16 @@ import { AuthService } from '../aservice/auth.service';
 @Component({
   selector: 'app-usersignup',
   standalone: true,
-  imports: [FormsModule, RouterOutlet, RouterLink, CommonModule, HttpClientModule],
+  imports: [
+    FormsModule,
+    RouterOutlet,
+    RouterLink,
+    CommonModule,
+    HttpClientModule,
+  ],
   templateUrl: './usersignup.component.html',
-  styleUrl: './usersignup.component.css'
+  styleUrl: './usersignup.component.css',
 })
-
 export class UsersignupComponent {
   // showModal = false;
   // loggedUserData:any;
@@ -49,35 +59,38 @@ export class UsersignupComponent {
   //     }
   //     })
 
-
-
   // }
   // object for signup
-  signupObj: any = {
 
-    "firstName": "",
-    "lastName": "",
-    "email": "",
-    "password": "",
-    "contactNumber": "",
-    "address": "",
-    "latitude": 0,
-    "longitude": 0
+  // Password validation pattern: at least one digit, one non-alphanumeric character
+  passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+  // Contact validation pattern: exactly 10 digits
+  contactPattern = /^[0-9]{10}$/;
+
+  signupObj: any = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    contactNumber: '',
+    address: '',
+    latitude: 0,
+    longitude: 0,
   };
 
   validationErrors: any[] = []; // Validation errors array
   suggestions: any[] = []; // To hold address suggestions
-
 
   constructor(
     private authsrv: AuthService,
     private router: Router,
     private http: HttpClient,
     private ngZone: NgZone
-  ) { }
+  ) {}
 
   // for password show hide icon
   showPassword = false;
+  isLoading = false; // Loading state
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
@@ -93,6 +106,7 @@ export class UsersignupComponent {
       this.suggestions = [];
     }
   }
+
   // Handle address input change
   handleAddressInput(event: Event) {
     const inputElement = event.target as HTMLInputElement;
@@ -117,7 +131,12 @@ export class UsersignupComponent {
       this.suggestions = [];
 
       console.log('Selected Address:', this.signupObj.address);
-      console.log('Latitude:', this.signupObj.latitude, 'Longitude:', this.signupObj.longitude);
+      console.log(
+        'Latitude:',
+        this.signupObj.latitude,
+        'Longitude:',
+        this.signupObj.longitude
+      );
     });
   }
 
@@ -135,33 +154,34 @@ export class UsersignupComponent {
       this.suggestions = [];
     }
   }
-  onSignUp() {
-    //this line to inspect the signup object before making the API call
+
+  onSignUp(form: any) {
     console.log('Signup Object:', this.signupObj);
+    if (form.invalid) {
+      console.log('Form is invalid, please fix the errors.');
+      return; // Prevent submission if form is invalid
+    }
+    this.isLoading = true;
 
-    this.authsrv.createUser(this.signupObj).subscribe((res: any) => {
-      console.log('Signup successful', res);
-      this.router.navigate(['/login']);
-    },
-     (err) => {
-      console.error('Signup failed', err);
-        if (err.status === 400) {
-          this.validationErrors = [];
-          if (err.error) {
-            for (const key in err.error) {
-              if (err.error.hasOwnProperty(key)) {
-                this.validationErrors.push(...err.error[key]);
-              }
-            }
-          }
-        } else if (err.status === 500) {
-          console.error('Internal server error:', err.error);
+    this.authsrv.createUser(this.signupObj).subscribe(
+      (res) => {
+        console.log('Signup successful', res);
+        this.router.navigate(['/login']);
+      },
+      (err) => {
+        this.isLoading = false;
+        console.error('Signup failed', err);
+        if (err.status === 400 && err.error.errors) {
+          this.validationErrors = err.error.errors;
         } else {
-          console.error('Unexpected error:', err);
-          this.validationErrors = ['An unexpected error occurred. Please try again later.'];
+          this.validationErrors = [
+            'An error occurred. Please try again later.',
+          ];
         }
-    });
-    
+      },
+      () => {
+        this.isLoading = false;
+      }
+    );
   }
-
 }
