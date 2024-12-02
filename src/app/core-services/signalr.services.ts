@@ -33,14 +33,16 @@ export class SignalrService {
 
     public startConnection(): void {
 
+        const options = {
+            accessTokenFactory: () => this.loginToken,
+            skipNegotiation: true,
+            transport: signalR.HttpTransportType.WebSockets
+        };
+ 
         this.hubConnection = new signalR.HubConnectionBuilder()
-    .configureLogging(signalR.LogLevel.Debug) // Enable detailed logs
-    .withUrl(`${environment.BASE_SIGNAL}message`, {
-        accessTokenFactory: () => localStorage.getItem('authToken') || '',
-        transport: signalR.HttpTransportType.WebSockets
-    })
-    .withAutomaticReconnect()
-    .build();
+            .withUrl(`${environment.BASE_SIGNAL}message`, options)
+            .withAutomaticReconnect()
+            .build();
 
         // const options = {
         //     accessTokenFactory: () => this.loginToken,
