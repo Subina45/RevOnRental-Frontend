@@ -39,7 +39,6 @@ export class LoginComponent {
   onLogin() {
     console.log('Login Object:', this.loginObj);
     this.isLoading = true; // Set loading to true when login starts
-  
     this.authService.loginUser(this.loginObj).subscribe(
       (res: any) => {
         if (res) {

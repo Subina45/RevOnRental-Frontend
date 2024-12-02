@@ -3,6 +3,6 @@ export const environment = {
     useProdFirebase: false,
     https: false,
     environmentName: 'development',
-    API_URL: 'http://localhost:5199/api',
-    BASE_SIGNAL: 'http://localhost:5199/',
+    API_URL: 'https://localhost:7275/api',
+    BASE_SIGNAL: 'https://localhost:7275/',
   };
