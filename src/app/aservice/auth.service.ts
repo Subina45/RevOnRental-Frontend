@@ -4,8 +4,8 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import jwt_decode from 'jwt-decode';
 import { environment } from '../../environments/environment';
-import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -105,6 +105,14 @@ export class AuthService {
       console.error('Error getting logged-in role:', error);
       return null;
     }
+  }
+
+  isLoggedIn(){
+    const token=this.getToken();
+    if(token){
+      return true;
+    }
+    return false;
   }
 
   // Check authentication status with error handling

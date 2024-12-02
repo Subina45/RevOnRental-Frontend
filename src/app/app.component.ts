@@ -23,5 +23,6 @@ import { PokharaMapComponent } from './components/pokhara-map/pokhara-map.compon
 })
 export class AppComponent {
   title = 'RevOn_Project';
+     
 }
 

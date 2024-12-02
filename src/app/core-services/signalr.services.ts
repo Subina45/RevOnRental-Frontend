@@ -27,7 +27,8 @@ export class SignalrService {
     loginToken: any;
 
     constructor() {
-        this.loginToken = localStorage.getItem('authToken');
+        this.loginToken = typeof window !== 'undefined' && localStorage ? localStorage.getItem('authToken') : null;
+
         this.startConnection();
     }
 
@@ -88,24 +89,6 @@ export class SignalrService {
             }
         });
     }
-    public messages: string[] = [];
-
-    // public addMessageListener(): void {
-    //     this.hubConnection.on('ReceiveMessage', (user, message) => {
-    //       this.messages.push(`${user}: ${message}`);
-    //       console.log(this.messages);
-    //     });
-    //   }
-    
-    //   public sendMessage(user: string, message: string): void {
-    //     debugger;
-    //     this.hubConnection
-    //       .invoke('SendMessage', user, message)
-    //       .catch((err) => {
-    //         debugger;
-    //         console.error(err);
-    //     });
-    //   }
 
    
     OnlineUsers() {

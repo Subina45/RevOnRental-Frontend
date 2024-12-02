@@ -1,18 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import {
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet,
-  Router,
-} from '@angular/router';
+
 import { AuthService } from '../aservice/auth.service';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
 
 import { Subscription, throwError } from 'rxjs';
 import { LoginstateService } from '../aservice/loginstate.service';
 import { VehicleService } from '../aservice/vehicle.service';
+import { SignalrService } from '../core-services/signalr.services';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 interface UnReadNotifications {
   unreadCount: number;
@@ -42,12 +39,27 @@ export class NavbarComponent {
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
   }
+  currentUserId:any=null;
+  currentBusinessId:any=null;
+  currentRole:any=null;
   constructor(
     private loginStateService: LoginstateService,
     private router: Router,
     private authservice: AuthService,
-    private vehicleservice: VehicleService
-  ) {}
+    private vehicleservice: VehicleService,
+    private signalRService: SignalrService
+  ) {
+    if(this.authservice.isLoggedIn()){
+      this.currentRole=this.authservice.getLoggedInRole();
+      if(this.currentRole=='user'){
+        this.currentUserId=this.authservice.getUserId();
+      }else{
+        this.currentBusinessId=this.authservice.getBusinessId();
+      }
+      this.signalRServiceListners();
+      this.signalRService.onNotificationCreateSignal();
+    }
+  }
   isBusinessUser: boolean = false;
   ngOnInit(): void {
     this.loginStateService.isLoggedIn.subscribe((status) => {
@@ -73,6 +85,18 @@ export class NavbarComponent {
       }
     });
   }
+
+  getNotificationCount(id){
+    this.authservice.fetchUnReadNotificationsCount(id).subscribe({
+      next: (response: UnReadNotifications) => {
+        this.unreadNotifications = response.unreadCount;
+        console.log('Unread notifications:', this.unreadNotifications);
+      },
+      error: (error) => {
+        console.error('Error fetching unread count:', error);
+      },
+    });
+  }
   onLogout(): void {
     this.authservice.logout();
     this.loginStateService.logout();
@@ -80,6 +104,21 @@ export class NavbarComponent {
       window.location.reload();
     });
   }
+
+  private signalRServiceListners() {
+    this.signalRService.onCreateNotification$.subscribe((respo: any) => {
+        if (respo) {
+          debugger;
+          
+          if(this.currentRole=='user'){
+            this.getNotificationCount(this.currentUserId);
+          }
+          if(this.currentRole=='business'){
+            this.getNotificationCount(this.currentBusinessId);
+          }
+        }
+    });
+}
 
   // userProfile = {
   //   name: 'John Doe',
