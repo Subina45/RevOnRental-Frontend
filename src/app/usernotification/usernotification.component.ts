@@ -99,16 +99,15 @@ export class UsernotificationComponent {
   }
 
   initiatePayment() {
-    
+   
     const paymentDetails = {
         returnUrl: "http://localhost:4200/",
         websiteUrl: "https://example.com/",
         amount: "7000",
-        purchaseOrderId: "Order01",
-        purchaseOrderName: "Vehicle Rental Order",
-        customerName: "Ram Bahadur",
-        customerEmail: "test@khalti.com",
-        customerPhone: "9800000003"
+        purchaseRentalId: "16",
+        userId:1043,
+        vehicleId:27,
+        businessId:12
     };
 this.paymentService.initiatePaymentApi(paymentDetails).subscribe((res:any)=>{
   debugger;
