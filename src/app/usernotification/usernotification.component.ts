@@ -1,8 +1,9 @@
 import { CommonModule, NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../aservice/auth.service';
+import { PaymentService } from '../aservice/payment.service';
 
 interface BookingRequest {
   id: number; // Add if available in your data
@@ -43,7 +44,23 @@ export class UsernotificationComponent {
   constructor(
     private router: Router,
     private authService: AuthService,
-  ) {}
+    private paymentService:PaymentService,
+    private route: ActivatedRoute,
+
+  ) {
+    this.route.queryParams.subscribe((params) => {
+      debugger;
+      if(params['pidx']){
+        const callBack = {
+          pidx: params['pidx'],
+          
+      };
+        window.open(`https://test-pay.khalti.com/?pidx=${params['pidx']}`);
+        
+      }
+      
+  });
+  }
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
@@ -80,4 +97,27 @@ export class UsernotificationComponent {
     console.log('Review:', this.review);
     // Add logic to send data to the backend
   }
+
+  initiatePayment() {
+    
+    const paymentDetails = {
+        returnUrl: "http://localhost:4200/",
+        websiteUrl: "https://example.com/",
+        amount: "7000",
+        purchaseOrderId: "Order01",
+        purchaseOrderName: "Vehicle Rental Order",
+        customerName: "Ram Bahadur",
+        customerEmail: "test@khalti.com",
+        customerPhone: "9800000003"
+    };
+this.paymentService.initiatePaymentApi(paymentDetails).subscribe((res:any)=>{
+  debugger;
+  if(res){
+    if(res.payment_url){
+      window.open(res.payment_url, "_blank"); // Open the payment URL
+    }
+  }
+})
+
+}
 }
