@@ -222,7 +222,7 @@ export class BusinessService {
       );
   }
 
-  confirmRental(rentalId: number, paymentType: number): Observable<any> {
+  confirmRental(rentalId: number): Observable<any> {
     const token = this.authService.getToken();
 
     if (!token) {
@@ -236,13 +236,65 @@ export class BusinessService {
     return this.http
       .post(
         `${this.apiUrl}/VehicleRental/confirm`,
-        { rentalId, paymentType },
+        { rentalId, paymentType: 1 },
         { headers }
       )
       .pipe(
         catchError((error) => {
           console.error('Error confirmation rental:', error);
           return throwError(() => new Error('Rental confirmation failed.'));
+        })
+      );
+  }
+
+  completeRental(rentalId: number): Observable<any> {
+    const token = this.authService.getToken();
+
+    if (!token) {
+      console.error('No authentication token found.');
+      return throwError(() => new Error('User is not authenticated.'));
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http
+      .post(
+        `${this.apiUrl}/VehicleRental/complete-rental`,
+        { rentalId },
+        { headers }
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Error completing rental:', error);
+          return throwError(() => new Error('Rental completion failed.'));
+        })
+      );
+  }
+
+  markNotificationAsChangeIsNew(businessId): Observable<any> {
+    const token = this.authService.getToken();
+
+    if (!token) {
+      console.error('No authentication token found.');
+      return throwError(() => new Error('User is not authenticated.'));
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http
+      .post(
+        `${this.apiUrl}/Notifications/notifications/change-is-new`,
+        { businessId },
+        { headers }
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Error rejecting rental:', error);
+          return throwError(
+            () => new Error('Notification failed to mark as read.')
+          );
         })
       );
   }

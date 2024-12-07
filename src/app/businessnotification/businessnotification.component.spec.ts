@@ -8,10 +8,9 @@ describe('BusinessnotificationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BusinessnotificationComponent]
-    })
-    .compileComponents();
-    
+      imports: [BusinessnotificationComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(BusinessnotificationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

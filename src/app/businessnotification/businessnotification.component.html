@@ -116,21 +116,79 @@
               <div
                 *ngFor="let request of bookingRequests"
                 class="card notification-card p-3 mb-4"
+                [ngStyle]="{
+                  'background-color': request.isRead ? '#D3D3D3' : '#add8e6'
+                }"
               >
                 <div class="d-flex justify-content-between align-items-start">
                   <!-- Notification content -->
-                  <div class="d-flex align-items-start">
+                  <div
+                    *ngIf="request.notificationType === 1"
+                    class="d-flex align-items-start"
+                  >
                     <i
                       class="bi bi-car-front-fill notification-icon text-success me-3"
                     ></i>
                     <div>
-                      <h6 class="mb-1">New Booking Request</h6>
+                      <h6
+                        class="mb-1"
+                        [ngClass]="{ 'text-white': !request.isRead }"
+                      >
+                        New Booking Request
+                      </h6>
                       <p class="mb-0">{{ request.message }}</p>
-                      <small class="timestamp">2 minutes ago</small>
+                      <small class="timestamp">{{
+                        getTimeDifference(request.createdDate)
+                      }}</small>
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="request.notificationType === 4"
+                    class="d-flex justify-content-between align-items-start"
+                  >
+                    <!-- Notification content -->
+                    <div class="d-flex align-items-start">
+                      <i
+                        class="bi bi-slash-circle notification-icon text-danger me-3"
+                      ></i>
+                      <div>
+                        <h6 class="mb-1">Rental Cancelled</h6>
+                        <p class="mb-0">{{ request.message }}</p>
+                        <small class="timestamp">{{
+                          getTimeDifference(request.createdDate)
+                        }}</small>
+                      </div>
+                    </div>
+                    <!-- Payment -->
+                    <div
+                      class="payment d-flex flex-column align-items-center gap-2"
+                    ></div>
+                  </div>
+                  <div
+                    *ngIf="request.notificationType === 5"
+                    class="d-flex align-items-start"
+                  >
+                    <i
+                      class="bi bi-currency-dollar notification-icon text-info me-3"
+                    ></i>
+                    <div>
+                      <h6
+                        class="mb-1"
+                        [ngClass]="{ 'text-white': !request.isRead }"
+                      >
+                        Payment Received
+                      </h6>
+                      <p class="mb-0">
+                        {{ request.misc.user.name }}, {{ request.message }}
+                      </p>
+                      <small class="timestamp">{{
+                        getTimeDifference(request.createdDate)
+                      }}</small>
                     </div>
                   </div>
                   <!-- Accept and Reject Icons -->
                   <div
+                    *ngIf="request.notificationType === 1 && !request.isRead"
                     class="acceptreject d-flex flex-column align-items-center gap-2"
                   >
                     <button
@@ -151,27 +209,6 @@
                       Reject
                       <i class="fas fa-times"></i>
                     </button>
-                  </div>
-                </div>
-              </div>
-              <!-- Notification 2 -->
-              <div class="col-12">
-                <div
-                  *ngFor="let request of bookingRequests"
-                  class="card notification-card p-3 mb-4"
-                >
-                  <div class="d-flex align-items-start">
-                    <i
-                      class="bi bi-currency-dollar notification-icon text-info me-3"
-                    ></i>
-                    <div>
-                      <h6 class="mb-1">Payment Received</h6>
-                      <p class="mb-0">
-                        {{ request.vehicleName }} has been paid for by
-                        {{ request.userName }}
-                      </p>
-                      <small class="timestamp">15 minutes ago</small>
-                    </div>
                   </div>
                 </div>
               </div>

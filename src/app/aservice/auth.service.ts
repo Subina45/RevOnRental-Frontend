@@ -107,9 +107,9 @@ export class AuthService {
     }
   }
 
-  isLoggedIn(){
-    const token=this.getToken();
-    if(token){
+  isLoggedIn() {
+    const token = this.getToken();
+    if (token) {
       return true;
     }
     return false;
@@ -295,5 +295,127 @@ export class AuthService {
           );
         })
       );
+  }
+  markNotificationAsChangeIsNew(userId): Observable<any> {
+    const token = this.getToken();
+
+    if (!token) {
+      console.error('No authentication token found.');
+      return throwError(() => new Error('User is not authenticated.'));
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http
+      .post(
+        `${this.apiUrl}/Notifications/notifications/change-is-new`,
+        { userId },
+        { headers }
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Error rejecting rental:', error);
+          return throwError(
+            () => new Error('Notification failed to mark as read.')
+          );
+        })
+      );
+  }
+
+  markNotificationAsRead(notificationId): Observable<any> {
+    const token = this.getToken();
+
+    if (!token) {
+      console.error('No authentication token found.');
+      return throwError(() => new Error('User is not authenticated.'));
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http
+      .post(
+        `${this.apiUrl}/Notifications/notifications/mark-as-read`,
+        { notificationId },
+        { headers }
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Error rejecting rental:', error);
+          return throwError(
+            () => new Error('Notification failed to mark as read.')
+          );
+        })
+      );
+  }
+
+  cancelRental(rentalId: number): Observable<any> {
+    const token = this.getToken();
+
+    if (!token) {
+      console.error('No authentication token found.');
+      return throwError(() => new Error('User is not authenticated.'));
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http
+      .post(
+        `${this.apiUrl}/VehicleRental/cancel-rental`,
+        { rentalId },
+        { headers }
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Error rejecting rental:', error);
+          return throwError(() => new Error('Rental rejection failed.'));
+        })
+      );
+  }
+
+  rateBusiness(businessId, userId, rating, review): Observable<any> {
+    const token = this.getToken();
+
+    if (!token) {
+      console.error('No authentication token found.');
+      return throwError(() => new Error('User is not authenticated.'));
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http
+      .post(
+        `${this.apiUrl}/Rating/submit-rating`,
+        { businessId, userId, rating, review },
+        { headers, responseType: 'text' }
+      )
+      .pipe(
+        catchError((error) => {
+          console.error('Error rating business:', error);
+          return throwError(() => new Error('Business rating failed.'));
+        })
+      );
+  }
+
+  makePayment(): Observable<any> {
+    const token = this.getToken();
+
+    if (!token) {
+      console.error('No authentication token found.');
+      return throwError(() => new Error('User is not authenticated.'));
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    return this.http.post(`${this.apiUrl}/Payment`, { headers }).pipe(
+      catchError((error) => {
+        console.error('Error finalizing payment:', error);
+        return throwError(() => new Error('Payment failed.'));
+      })
+    );
   }
 }

@@ -66,7 +66,11 @@ export class BusinesshistoryComponent {
       this.businessService.getBusinessBookings(businessId).subscribe(
         (bookings: Booking[]) => {
           this.bookings = bookings
-            .filter((booking) => booking.rentalStatus === 'Confirmed' || booking.rentalStatus === 'Completed') // Add this line
+            .filter(
+              (booking) =>
+                booking.rentalStatus === 'Confirmed' ||
+                booking.rentalStatus === 'Completed'
+            ) // Add this line
             .map((booking) => ({
               ...booking,
               photoUrl: `data:${booking.photo.contentType};base64,${booking.photo.fileContent}`,

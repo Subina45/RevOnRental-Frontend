@@ -28,6 +28,7 @@ import { UsernotificationComponent } from './usernotification/usernotification.c
 import { GetbusinessdetailComponent } from './getbusinessdetail/getbusinessdetail.component';
 import { BusinessRoleGuard } from '../guard/BusinessRoleGuard';
 import { UserRoleGuard } from '../guard/UserRoleGuard';
+import { AuthGuard } from '../guard/AuthGuard';
 
 export const routes: Routes = [
   {
@@ -53,10 +54,12 @@ export const routes: Routes = [
   },
   {
     path: 'signup',
+    canActivate: [AuthGuard],
     component: UsersignupComponent,
   },
   {
     path: 'login',
+    canActivate: [AuthGuard],
     component: LoginComponent,
   },
   {

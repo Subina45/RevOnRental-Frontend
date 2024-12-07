@@ -107,9 +107,7 @@ export class NavbarComponent {
 
   private signalRServiceListners() {
     this.signalRService.onCreateNotification$.subscribe((respo: any) => {
-        if (respo) {
-          debugger;
-          
+        if (respo) {          
           if(this.currentRole=='user'){
             this.getNotificationCount(this.currentUserId);
           }

@@ -71,55 +71,66 @@
               <td>{{ booking.endDate | date : "shortDate" }}</td>
               <td>{{ booking.totalPrice | currency : "NPR" }}</td>
               <td>
-                <!-- Handling Confirmed Status -->
-                <ng-container
-                  *ngIf="
-                    booking.rentalStatus === 'Confirmed';
-                    else otherStatuses
-                  "
-                >
-                  <!-- Dropdown for 'Confirmed' status -->
+                <!-- Pending Status Dropdown -->
+                <!-- Pending Status Dropdown -->
+                <ng-container *ngIf="booking.rentalStatus === 'Pending'">
                   <select
-                    class="form-select form-select-sm bg-success text-white"
-                    (change)="markAsCompleted(booking.id)"
+                    class="form-select form-select-sm"
+                    [(ngModel)]="booking.rentalStatus"
+                    (change)="onStatusChange(booking)"
+                    [ngStyle]="{
+                      'background-color': '#ffc107',
+                      color: 'black'
+                    }"
                   >
-                    <option value="Confirmed" selected>Confirmed</option>
-                    <option value="Completed">Completed</option>
+                    <option value="Pending" selected>Pending</option>
+                    <option value="Accepted">Accept</option>
+                    <option value="Rejected">Reject</option>
                   </select>
                 </ng-container>
 
-                <!-- Handling Accepted Status -->
-                <ng-template #otherStatuses>
-                  <ng-container
-                    *ngIf="
-                      booking.rentalStatus === 'Accepted';
-                      else defaultStatus
-                    "
+                <!-- Confirmed Status Dropdown -->
+                <ng-container *ngIf="booking.rentalStatus === 'Confirmed'">
+                  <select
+                    class="form-select form-select-sm"
+                    [(ngModel)]="booking.rentalStatus"
+                    (change)="onStatusChange(booking)"
+                    [ngStyle]="{
+                      'background-color': '#28a745',
+                      color: 'white'
+                    }"
                   >
-                    <!-- Dropdown for 'Accepted' status -->
-                    <select
-                      class="form-select form-select-sm bg-primary text-white"
-                      (change)="markAsRejected(booking.id)"
-                    >
-                      <option value="Accepted" selected>Accepted</option>
-                      <option value="Rejected">Rejected</option>
-                    </select>
-                  </ng-container>
+                    <option value="Confirmed" selected>Confirmed</option>
+                    <option value="Completed">Complete</option>
+                  </select>
+                </ng-container>
 
-                  <!-- Handling other statuses -->
-                  <ng-template #defaultStatus>
-                    <select
-                      class="form-select status-dropdown"
-                      [(ngModel)]="booking.rentalStatus"
-                      (change)="onStatusChange(booking)"
-                    >
-                      <option value="Confirmed">Confirmed</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Accepted">Accepted</option>
-                      <!-- <option value="Cancelled">Cancelled</option> -->
-                    </select>
-                  </ng-template>
-                </ng-template>
+                <!-- Static Status Display for other statuses -->
+                <ng-container
+                  *ngIf="
+                    booking.rentalStatus !== 'Pending' &&
+                    booking.rentalStatus !== 'Confirmed'
+                  "
+                >
+                  <div
+                    class="status-display"
+                    [ngStyle]="{
+                      'background-color':
+                        booking.rentalStatus === 'Accepted'
+                          ? '#007bff'
+                          : booking.rentalStatus === 'Rejected'
+                          ? '#dc3545'
+                          : booking.rentalStatus === 'Completed'
+                          ? '#198754'
+                          : booking.rentalStatus === 'Cancelled'
+                          ? '#dc3545'
+                          : '',
+                      color: 'white'
+                    }"
+                  >
+                    {{ booking.rentalStatus }}
+                  </div>
+                </ng-container>
               </td>
             </tr>
           </tbody>

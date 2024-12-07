@@ -4,8 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../aservice/auth.service';
 import { BusinessService } from '../aservice/business.service';
+
 export interface Booking {
-  id: number; // Add this property
+  id: number;
   userName: string;
   startDate: Date;
   endDate: Date;
@@ -22,6 +23,7 @@ export interface Booking {
 interface UnReadNotifications {
   unreadCount: number;
 }
+
 @Component({
   selector: 'app-booking',
   standalone: true,
@@ -30,8 +32,6 @@ interface UnReadNotifications {
   styleUrls: ['./booking.component.css'],
 })
 export class BookingComponent {
-  selectedColor: string = '#28a745'; // Green for Confirmed
-  selectedTextColor: string = 'white'; // White text
   unReadNotifications: UnReadNotifications = { unreadCount: 0 };
   unreadNotifications: number = 0;
   bookings: Booking[] = [];
@@ -45,75 +45,131 @@ export class BookingComponent {
   ngOnInit(): void {
     const businessId = this.authService.getBusinessId();
     if (businessId) {
-      this.businessService.fetchUnReadNotificationsCount(businessId).subscribe({
-        next: (response: UnReadNotifications) => {
-          this.unreadNotifications = response.unreadCount;
-          console.log('Unread notifications:', this.unreadNotifications);
+      this.loadNotificationsAndBookings(businessId);
+    }
+  }
+
+  private loadNotificationsAndBookings(businessId) {
+    // Load unread notifications
+    this.businessService.fetchUnReadNotificationsCount(businessId).subscribe({
+      next: (response: UnReadNotifications) => {
+        this.unreadNotifications = response.unreadCount;
+      },
+      error: (error) => {
+        console.error('Error fetching unread count:', error);
+      },
+    });
+
+    // Load bookings
+    this.businessService.getBusinessBookings(businessId).subscribe({
+      next: (bookings: Booking[]) => {
+        this.bookings = bookings.map((booking) => ({
+          ...booking,
+          photoUrl: `data:${booking.photo.contentType};base64,${booking.photo.fileContent}`,
+        }));
+      },
+      error: (error) => {
+        console.error('Error fetching bookings:', error);
+      },
+    });
+  }
+
+  onStatusChange(booking: Booking) {
+    const bookingId = booking.id;
+    const newStatus = booking.rentalStatus;
+
+    switch (newStatus) {
+      case 'Accepted':
+        this.acceptBooking(bookingId);
+        break;
+      case 'Rejected':
+        this.rejectBooking(bookingId);
+        break;
+      case 'Completed':
+        this.completeBooking(bookingId);
+        break;
+    }
+  }
+
+  private updateNotification(bookingId): void {
+    const businessId = this.authService.getBusinessId();
+    if (businessId) {
+      this.businessService.fetchBusinessNotifications(businessId).subscribe({
+        next: (response: any) => {
+          response.forEach((notification) => {
+            const rentalId = notification.misc.rentalId;
+            if (bookingId === rentalId) {
+              this.businessService.markNotificationAsRead(notification.id).subscribe({
+                next: () => {
+                  console.log(`Notification ${rentalId} marked as read`);
+                },
+                error: (error) => {
+                  console.error(
+                    `Error marking notification ${rentalId} as read:`,
+                    error
+                  );
+                },
+              });
+            }
+          });
         },
         error: (error) => {
           console.error('Error fetching unread count:', error);
         },
       });
-      this.businessService.getBusinessBookings(businessId).subscribe(
-        (bookings: Booking[]) => {
-          this.bookings = bookings.map((booking) => ({
-            ...booking,
-            photoUrl: `data:${booking.photo.contentType};base64,${booking.photo.fileContent}`,
-          }));
-        },
-        (error) => {
-          console.error('Error fetching bookings:', error);
-        }
-      );
     }
   }
 
-  // Function to handle accepting a booking
-  acceptBooking(bookingId: number) {
-    this.businessService.acceptRental(bookingId).subscribe(
-      (response) => {
-        // Update the booking status in the UI
-        const booking = this.bookings.find((b) => b.id === bookingId);
-        if (booking) {
-          booking.rentalStatus = 'Accepted';
-        }
+  private acceptBooking(bookingId: number) {
+    this.businessService.acceptRental(bookingId).subscribe({
+      next: (response) => {
+        this.updateBookingStatus(bookingId, 'Accepted');
+        this.updateNotification(bookingId);
       },
-      (error) => {
+      error: (error) => {
         console.error('Error accepting booking:', error);
-      }
-    );
-  }
-
-  markAsCompleted(bookingId: number): void {
-    // Business user marks the booking as 'Completed'
-    console.log(`Booking ID ${bookingId} marked as Completed`);
-
-    // Optionally, make an API call to update the status on the server
-    // this.bookingService.updateStatus(bookingId, newStatus).subscribe();
-  }
-  markAsRejected(bookingId: number) {
-    this.businessService.rejectRental(bookingId).subscribe(
-      (response) => {
-        console.log('Booking rejected:', response);
-        // Update the booking status in the UI
-        const booking = this.bookings.find((b) => b.id === bookingId);
-        if (booking) {
-          booking.rentalStatus = 'Rejected';
-        }
+        this.revertBookingStatus(bookingId);
       },
-      (error) => {
-        console.error('Error rejecting booking:', error);
-      }
-    );
+    });
   }
-  onStatusChange(booking: any) {
-    console.log('Status changed to:', booking.rentalStatus);
-    if (booking.rentalStatus === 'Completed') {
-      this.markAsCompleted(booking.id);
-    } else if (booking.rentalStatus === 'Rejected') {
-      this.markAsRejected(booking.id);
-    } else if (booking.rentalStatus === 'Accepted') {
-      this.acceptBooking(booking.id);
+
+  private rejectBooking(bookingId: number) {
+    this.businessService.rejectRental(bookingId).subscribe({
+      next: (response) => {
+        this.updateBookingStatus(bookingId, 'Rejected');
+        this.updateNotification(bookingId);
+      },
+      error: (error) => {
+        console.error('Error rejecting booking:', error);
+        this.revertBookingStatus(bookingId);
+      },
+    });
+  }
+
+  private completeBooking(bookingId: number) {
+    this.businessService.completeRental(bookingId).subscribe({
+      next: (response) => {
+        this.updateBookingStatus(bookingId, 'Completed');
+      },
+      error: (error) => {
+        console.error('Error completing booking:', error);
+        this.revertBookingStatus(bookingId);
+      },
+    });
+  }
+
+  private updateBookingStatus(bookingId: number, status: string) {
+    const booking = this.bookings.find((b) => b.id === bookingId);
+    if (booking) {
+      booking.rentalStatus = status;
+    }
+  }
+
+  private revertBookingStatus(bookingId: number) {
+    const booking = this.bookings.find((b) => b.id === bookingId);
+    if (booking) {
+      // Revert to original status
+      this.loadNotificationsAndBookings(this.authService.getBusinessId());
     }
   }
 

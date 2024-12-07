@@ -25,10 +25,11 @@ interface BookingRequest {
       id: number;
       name: string;
     };
-    rental: {
-      id: number;
-    };
+    rentalId: number;
   };
+  notificationType: number;
+  isRead: boolean;
+  createdDate: Date;
 }
 
 interface UnReadNotifications {
@@ -71,9 +72,37 @@ export class BusinessnotificationComponent {
     this.businessService.fetchBusinessNotifications(businessId).subscribe(
       (bookingRequests: BookingRequest[]) => {
         this.bookingRequests = bookingRequests;
+        // Mark notifications with notificationType: 4 as read
+        const paymentNotificationIds = this.bookingRequests
+          .filter((request) => request.notificationType === 4 || request.notificationType === 5)
+          .map((request) => request.id);
+
+        paymentNotificationIds.forEach((notificationId) => {
+          this.businessService
+            .markNotificationAsRead(notificationId)
+            .subscribe({
+              next: () => {
+                console.log(`Notification ${notificationId} marked as read`);
+              },
+              error: (error) => {
+                console.error(
+                  `Error marking notification ${notificationId} as read:`,
+                  error
+                );
+              },
+            });
+        });
       },
       (error) => {
         console.error('Error fetching booking requests:', error);
+      }
+    );
+    this.businessService.markNotificationAsChangeIsNew(businessId).subscribe(
+      () => {
+        this.updateNotificationCount();
+      },
+      (error) => {
+        console.error('Error setting notification as new:', error);
       }
     );
   }
@@ -88,9 +117,34 @@ export class BusinessnotificationComponent {
     }
   }
 
+  getTimeDifference(createdDate: Date): string {
+    const currentDate = new Date();
+    const diffInMilliseconds =
+      currentDate.getTime() - new Date(createdDate).getTime();
+    const diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInDays > 0) {
+      return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
+    } else if (diffInHours > 0) {
+      return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+    } else {
+      return `${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''} ago`;
+    }
+  }
+
   showConfirmation(request: BookingRequest, action: 'accept' | 'reject'): void {
     this.selectedRequest = request;
     this.currentAction = action;
+    this.businessService.markNotificationAsRead(request.id).subscribe({
+      next: () => {
+        console.log('Notification marked as read');
+      },
+      error: (error) => {
+        console.error('Error marking notification as read');
+      },
+    });
 
     const modalEl = document.getElementById('confirmationModal');
     if (modalEl) {
@@ -115,7 +169,7 @@ export class BusinessnotificationComponent {
   }
 
   private acceptRequest(request: BookingRequest): void {
-    this.businessService.acceptRental(request.misc.rental.id).subscribe({
+    this.businessService.acceptRental(request.misc.rentalId).subscribe({
       next: () => {
         this.bookingRequests = this.bookingRequests.filter(
           (r) => r.id !== request.id
@@ -131,7 +185,7 @@ export class BusinessnotificationComponent {
   }
 
   private rejectRequest(request: BookingRequest): void {
-    this.businessService.rejectRental(request.misc.rental.id).subscribe({
+    this.businessService.rejectRental(request.misc.rentalId).subscribe({
       next: () => {
         this.bookingRequests = this.bookingRequests.filter(
           (r) => r.id !== request.id

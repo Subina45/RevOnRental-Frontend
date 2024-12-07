@@ -1,70 +1,63 @@
-  /* Sidebar */
-  * font
-  
-
-  .row a {
-    font-size: 18px;
-  }
-
-  .sidebar {
-    background-color: #212529;
-    min-height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 240px;
-    color: white;
-    z-index: 1000;
-    
-  }
-
-  .sidebar .nav-link {
-    color: white;
-    margin-bottom: 20px;
-    font-size: 1.1rem;
-    transition: transform 0.3s ease-in-out;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-  }
-
-  .sidebar .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: scale(1.05);
-    /* Hover animation */
-  }
-
-  .sidebar .nav-link i {
-    color: white;
-  }
-
- h2{
-  font-size: 40px;
-  margin-top: 8vh;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+/* Sidebar */
+* font .row a {
+  font-size: 18px;
 }
 
+.sidebar {
+  background-color: #212529;
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  color: white;
+  z-index: 1000;
+}
 
+.sidebar .nav-link {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  transition: transform 0.3s ease-in-out;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
 
+.sidebar .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+  /* Hover animation */
+}
 
-  .table img {
-    border-radius: 5px;
-  }
+.sidebar .nav-link i {
+  color: white;
+}
 
-  .badge {
-    padding: 0.4em;
-  }
+h2 {
+  font-size: 40px;
+  margin-top: 8vh;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
 
-  .container {
-    margin-left: 18%;
-    /* Offset the sidebar width */
-  }
+.table img {
+  border-radius: 5px;
+}
 
-  /* General table responsiveness */
+.badge {
+  padding: 0.4em;
+}
+
+.container {
+  margin-left: 18%;
+  /* Offset the sidebar width */
+}
+
+/* General table responsiveness */
 .table-responsive {
   overflow-x: auto;
 }
 
-  /* Responsive adjustments */
- @media (max-width: 992px) {
+/* Responsive adjustments */
+@media (max-width: 992px) {
   .sidebar {
     width: 200px;
   }
@@ -92,7 +85,8 @@
     margin-left: 0;
   }
 
-  table th, table td {
+  table th,
+  table td {
     padding: 8px; /* Reduce padding to make the table fit better */
     font-size: 14px; /* Decrease font size */
   }
@@ -116,7 +110,7 @@
 }
 
 @media (max-width: 576px) {
-.sidebar {
+  .sidebar {
     height: 40vh; /* Set height to 60% of the viewport height */
     min-height: unset; /* Override min-height to allow setting a fixed height */
   }
@@ -133,11 +127,29 @@
 
 /* Animation for new notifications */
 @keyframes pulse {
-  0% { transform: scale(1) translate(-50%, -50%); }
-  50% { transform: scale(1.2) translate(-50%, -50%); }
-  100% { transform: scale(1) translate(-50%, -50%); }
+  0% {
+    transform: scale(1) translate(-50%, -50%);
+  }
+  50% {
+    transform: scale(1.2) translate(-50%, -50%);
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+  }
 }
 
 .badge.bg-danger {
   animation: pulse 1s ease-in-out;
 }
+
+
+.status-dropdown option {
+  background-color: transparent !important;
+  color: black !important;
+}
+
+/* Reset background when dropdown is opened */
+.status-dropdown:focus option {
+  background-color: white !important;
+}
+
