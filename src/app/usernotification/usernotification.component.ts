@@ -11,6 +11,7 @@ import { AuthService } from '../aservice/auth.service';
 import { PaymentService } from '../aservice/payment.service';
 import { BusinessService } from '../aservice/business.service';
 import { VehicleService } from '../aservice/vehicle.service';
+import { SharedServiceService } from '../aservice/shared-service.service';
 declare var bootstrap: any;
 
 interface BookingRequest {
@@ -73,9 +74,15 @@ export class UsernotificationComponent {
     private paymentService: PaymentService,
     private route: ActivatedRoute,
     private businessService: BusinessService,
-    private vehicleService: VehicleService
+    private vehicleService: VehicleService,
+    private sharedService:SharedServiceService
   ) {
     this.handlePaymentCallback();
+    this.sharedService.data$.subscribe(data => {
+      if(data){
+        this.ngOnInit();
+      }
+    });
   }
 
   private handlePaymentCallback(): void {
@@ -334,6 +341,7 @@ export class UsernotificationComponent {
       .getBusinessBookings(request.misc.business.id)
       .subscribe({
         next: (bookings: any[]) => {
+
           const booking = bookings.find(
             (b) => b.vehicleId === request.misc.vehicle.id
           );
@@ -352,7 +360,10 @@ export class UsernotificationComponent {
                 next: (response: any) => {
                   if (response && response.payment_url) {
                     // Open payment URL in the same window
+                    this.storeNotificationStatus(request.id, 'paid');
+
                     window.location.href = response.payment_url;
+
                     // Or to open in new tab:
                     // window.open(response.payment_url, '_blank');
                   }

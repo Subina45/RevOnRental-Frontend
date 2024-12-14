@@ -10,6 +10,7 @@ import { VehicleService } from '../aservice/vehicle.service';
 import { SignalrService } from '../core-services/signalr.services';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { SharedServiceService } from '../aservice/shared-service.service';
 
 interface UnReadNotifications {
   unreadCount: number;
@@ -48,7 +49,8 @@ export class NavbarComponent {
     private vehicleservice: VehicleService,
     private signalRService: SignalrService,
         private ngZone: NgZone,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private sharedService:SharedServiceService
     
   ) {
     if(this.authservice.isLoggedIn()){
@@ -112,6 +114,11 @@ export class NavbarComponent {
         if (respo) {   
           if(this.currentRole=='user'){
             this.getNotificationCount(this.currentUserId);
+            if(this.router.url.includes('/usernotification')){
+              this.sharedService.setData(true);
+
+            }
+
           }
         }
     });

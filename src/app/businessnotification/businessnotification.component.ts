@@ -1,9 +1,10 @@
 import { CommonModule, NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { BusinessService } from '../aservice/business.service';
 import { AuthService } from '../aservice/auth.service';
 import { SideBarComponent } from '../side-bar/side-bar.component';
+import { SharedServiceService } from '../aservice/shared-service.service';
 declare var bootstrap: any;
 
 interface BookingRequest {
@@ -45,6 +46,8 @@ interface UnReadNotifications {
   styleUrl: './businessnotification.component.css',
 })
 export class BusinessnotificationComponent {
+  @ViewChild(SideBarComponent, { static: true }) sideBarComponent: SideBarComponent;
+
   bookingRequests: BookingRequest[] = [];
   unReadNotifications: UnReadNotifications = { unreadCount: 0 };
   currentAction: 'accept' | 'reject' = 'accept';
@@ -55,44 +58,67 @@ export class BusinessnotificationComponent {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private businessService: BusinessService
+    private businessService: BusinessService,
+    private sharedService:SharedServiceService
   ) {}
 
   ngOnInit(): void {
+    this.getNotificationList();
+  }
+  parentFun(){
+    this.getNotificationList();
+  }
+  
+  private updateNotificationCount(): void {
     const businessId = this.authService.getBusinessId();
-    // Fetch unread count
-    this.businessService.fetchUnReadNotificationsCount(businessId).subscribe({
-      next: (response: UnReadNotifications) => {
-        this.unreadNotifications = response.unreadCount;
-        console.log('Unread notifications:', this.unreadNotifications);
-      },
-      error: (error) => {
-        console.error('Error fetching unread count:', error);
-      },
-    });
+    if (businessId) {
+      this.businessService.fetchUnReadNotificationsCount(businessId).subscribe({
+        next: (response: UnReadNotifications) => {
+          this.unreadNotifications = response.unreadCount;
+        },
+      });
+    }
+  }
+
+  getNotificationList(){
+    const businessId = this.authService.getBusinessId();
+   
     this.businessService.fetchBusinessNotifications(businessId).subscribe(
       (bookingRequests: BookingRequest[]) => {
         this.bookingRequests = bookingRequests;
-        // Mark notifications with notificationType: 4 as read
-        const paymentNotificationIds = this.bookingRequests
-          .filter((request) => request.notificationType === 4 || request.notificationType === 5)
-          .map((request) => request.id);
+         // Fetch unread count
+        const currentBusinessId=this.authService.getBusinessId();
 
-        paymentNotificationIds.forEach((notificationId) => {
-          this.businessService
-            .markNotificationAsRead(notificationId)
-            .subscribe({
-              next: () => {
-                console.log(`Notification ${notificationId} marked as read`);
-              },
-              error: (error) => {
-                console.error(
-                  `Error marking notification ${notificationId} as read:`,
-                  error
-                );
-              },
-            });
-        });
+         this.sideBarComponent.getNotificationCount(currentBusinessId);
+    // this.businessService.fetchUnReadNotificationsCount(businessId).subscribe({
+    //   next: (response: UnReadNotifications) => {
+    //     this.unreadNotifications = response.unreadCount;
+    //     console.log('Unread notifications:', this.unreadNotifications);
+    //   },
+    //   error: (error) => {
+    //     console.error('Error fetching unread count:', error);
+    //   },
+    // });
+        // // Mark notifications with notificationType: 4 as read
+        // const paymentNotificationIds = this.bookingRequests
+        //   .filter((request) => request.notificationType === 4 || request.notificationType === 5)
+        //   .map((request) => request.id);
+
+        // paymentNotificationIds.forEach((notificationId) => {
+        //   this.businessService
+        //     .markNotificationAsRead(notificationId)
+        //     .subscribe({
+        //       next: () => {
+        //         console.log(`Notification ${notificationId} marked as read`);
+        //       },
+        //       error: (error) => {
+        //         console.error(
+        //           `Error marking notification ${notificationId} as read:`,
+        //           error
+        //         );
+        //       },
+        //     });
+        // });
       },
       (error) => {
         console.error('Error fetching booking requests:', error);
@@ -106,16 +132,6 @@ export class BusinessnotificationComponent {
         console.error('Error setting notification as new:', error);
       }
     );
-  }
-  private updateNotificationCount(): void {
-    const businessId = this.authService.getBusinessId();
-    if (businessId) {
-      this.businessService.fetchUnReadNotificationsCount(businessId).subscribe({
-        next: (response: UnReadNotifications) => {
-          this.unreadNotifications = response.unreadCount;
-        },
-      });
-    }
   }
 
   getTimeDifference(createdDate: Date): string {
@@ -140,6 +156,7 @@ export class BusinessnotificationComponent {
     this.currentAction = action;
     this.businessService.markNotificationAsRead(request.id).subscribe({
       next: () => {
+        this.getNotificationList();
         console.log('Notification marked as read');
       },
       error: (error) => {
@@ -175,7 +192,8 @@ export class BusinessnotificationComponent {
         this.bookingRequests = this.bookingRequests.filter(
           (r) => r.id !== request.id
         );
-        this.updateNotificationCount(); // Update count after action
+        this.getNotificationList();
+        //this.updateNotificationCount(); // Update count after action
         alert('Booking request accepted successfully!');
       },
       error: (error) => {
@@ -191,7 +209,9 @@ export class BusinessnotificationComponent {
         this.bookingRequests = this.bookingRequests.filter(
           (r) => r.id !== request.id
         );
-        this.updateNotificationCount(); // Update count after action
+        this.getNotificationList();
+
+        //this.updateNotificationCount(); // Update count after action
         alert('Booking request rejected successfully!');
       },
       error: (error) => {
@@ -201,7 +221,5 @@ export class BusinessnotificationComponent {
     });
   }
 
-  navigateTo(path: string) {
-    this.router.navigate([path]);
-  }
+  
 }

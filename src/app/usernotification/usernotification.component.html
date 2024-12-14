@@ -158,11 +158,10 @@
                   <div>
                     <h6 class="mb-1">Rate business</h6>
                     <p class="mb-0">
-                      Please rate your experience with
-                      {{ request.businessName }} for your recent rental of
-                      {{ request.vehicleName }}.
+                      {{request.message}}
                     </p>
-                    <small class="timestamp">2 minutes ago</small>
+                    <small class="timestamp">                      {{getTimeDifference(request.createdDate)}}
+                    </small>
                   </div>
                 </div>
                 <!-- Rating -->

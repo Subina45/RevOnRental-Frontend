@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { SignalrService } from '../core-services/signalr.services';
 import { AuthService } from '../aservice/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SharedServiceService } from '../aservice/shared-service.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -16,11 +17,13 @@ export class SideBarComponent {
   unreadNotifications: number = 0;
   currentBusinessId:any=null;
   currentRole:any=null;
+  @Output('parentFun') parentFun: EventEmitter<any> = new EventEmitter();
 
 constructor(
     private authservice: AuthService,
     private signalRService: SignalrService,
         private router: Router,
+        private sharedService:SharedServiceService
     
 
   ) {
@@ -30,6 +33,7 @@ constructor(
     if(this.currentRole=='business'){
       this.currentBusinessId=this.authservice.getBusinessId();
       this.getNotificationCount(this.currentBusinessId);
+      
     }
   }
 
@@ -39,6 +43,9 @@ constructor(
           if (respo) {   
             if(this.currentRole=='business'){
               this.getNotificationCount(this.currentBusinessId);
+              if(this.router.url.includes('/businessnotification')){
+                this.parentFun.emit();
+              }
             }
           }
       });
@@ -57,7 +64,12 @@ constructor(
     }
 
     navigateTo(path: string) {
+      debugger;
       this.unreadNotifications=0;
       this.router.navigate([path]);
+    }
+
+    updateNotificationCount(){
+      
     }
 }
