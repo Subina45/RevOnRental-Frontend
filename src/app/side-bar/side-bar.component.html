@@ -1,0 +1,39 @@
+<nav class="col-lg-2 col-md-3 col-sm-12 sidebar d-flex flex-column p-3">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link text-white" routerLink="/dashboard"
+          ><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" routerLink="/booking"
+          ><i class="fas fa-calendar-check me-2"></i> Booking</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" routerLink="/vehicle"
+          ><i class="fas fa-car me-2"></i> Vehicles</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link text-white position-relative"
+          (click)="navigateTo('/businessnotification')"
+        >
+          <i class="fas fa-bell me-2"></i>
+          Notifications
+          <span
+            class="badge bg-danger position-absolute top-0 start-100 translate-middle"
+            *ngIf="unreadNotifications >= 0"
+          >
+            {{ unreadNotifications }}
+          </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" routerLink="/businesshistory"
+          ><i class="fas fa-history me-2"></i> History</a
+        >
+      </li>
+    </ul>
+  </nav>

@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../aservice/auth.service';
 import { BusinessService } from '../aservice/business.service';
+import { SideBarComponent } from '../side-bar/side-bar.component';
 interface Booking {
   User: string;
   model: string;
@@ -27,7 +28,7 @@ interface UnReadNotifications {
 @Component({
   selector: 'app-businesshistory',
   standalone: true,
-  imports: [RouterLink, RouterOutlet, CommonModule],
+  imports: [RouterLink, RouterOutlet, CommonModule,SideBarComponent],
   templateUrl: './businesshistory.component.html',
   styleUrl: './businesshistory.component.css',
 })

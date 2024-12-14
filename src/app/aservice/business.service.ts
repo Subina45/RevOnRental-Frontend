@@ -209,7 +209,7 @@ export class BusinessService {
     };
     return this.http
       .get(`${this.apiUrl}/Notifications/notifications/unread-count`, {
-        params: { businessId },
+        params: {id: businessId },
         headers,
       })
       .pipe(

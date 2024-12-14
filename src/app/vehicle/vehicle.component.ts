@@ -22,6 +22,7 @@ import { VehicleService } from '../aservice/vehicle.service';
 import { LoginstateService } from '../aservice/loginstate.service';
 import { AuthService } from '../aservice/auth.service';
 import { BusinessService } from '../aservice/business.service';
+import { SideBarComponent } from '../side-bar/side-bar.component';
 // import { AddvehicleComponent } from "../addvehicle/addvehicle.component";
 declare var bootstrap: any;
 
@@ -38,6 +39,7 @@ interface UnReadNotifications {
     AddvehicleComponent,
     ViewdetailpopupComponent,
     UpdatedeleteComponent,
+    SideBarComponent
   ],
   templateUrl: './vehicle.component.html',
   styleUrls: ['./vehicle.component.css'],

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SearchDataService } from '../aservice/searchData.spec';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BusinessService } from '../aservice/business.service';
+import { Subject, takeUntil } from 'rxjs';
 
 interface Vehicle {
   businessId: number;
@@ -28,6 +29,7 @@ interface Vehicle {
 export class BusinesslistComponent implements OnInit {
   vehicles: Vehicle[] = [];
   searchData: any = null; // Add a property to hold search data
+  unsubscribeSignal: Subject<void> = new Subject();
 
   constructor(
     private vehicleService: VehicleService,
@@ -66,9 +68,16 @@ export class BusinesslistComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribeSignal.next();
+    this.unsubscribeSignal.unsubscribe();
+}
+
   private fetchVehicles(searchData: any) {
     this.searchData = searchData;
-    this.vehicleService.searchVehicles(searchData).subscribe(
+    this.vehicleService.searchVehicles(searchData)
+    .pipe(takeUntil(this.unsubscribeSignal.asObservable()))
+    .subscribe(
       (response: any) => {
         this.vehicles = response;
       },

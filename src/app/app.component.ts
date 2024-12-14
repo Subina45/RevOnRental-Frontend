@@ -16,7 +16,11 @@ import { PokharaMapComponent } from './components/pokhara-map/pokhara-map.compon
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,PokharaMapComponent,RouterLink,BusinessTypeComponent,PokharaMapComponent,AddvehicleComponent,CompanyComponent,CarInfoComponent,ScooterComponent,BicycleComponent , RouterLinkActive,ModeComponent,LoginComponent,NavbarComponent,],
+  imports: [RouterOutlet,PokharaMapComponent,RouterLink,
+    BusinessTypeComponent,PokharaMapComponent,AddvehicleComponent,
+    CompanyComponent,CarInfoComponent,ScooterComponent,BicycleComponent , 
+    RouterLinkActive,ModeComponent,LoginComponent,NavbarComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
   

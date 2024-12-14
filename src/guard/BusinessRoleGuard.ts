@@ -20,7 +20,7 @@ export class BusinessRoleGuard implements CanActivate {
   ): Observable<boolean> | Promise<boolean> | boolean {
     const allowedRoles = next.data['allowedRoles'];
     const decoded = this.authService.decodeToken();
-    const userRole = decoded.role;
+    const userRole = decoded?.role;
     console.log("userRole", userRole);
     if (userRole === 'Business') {
       return true;

@@ -8,6 +8,7 @@ import { AddvehicleComponent } from '../addvehicle/addvehicle.component';
 import { VehicleService } from '../aservice/vehicle.service';
 import { AuthService } from '../aservice/auth.service';
 import { BusinessService } from '../aservice/business.service';
+import { SideBarComponent } from '../side-bar/side-bar.component';
 // import { NgModule } from '@angular/core';
 // import { FormsModule } from '@angular/forms';
 
@@ -24,6 +25,7 @@ interface UnReadNotifications {
     FormsModule,
     AddvehicleComponent,
     RouterOutlet,
+    SideBarComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],

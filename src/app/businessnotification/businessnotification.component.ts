@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { BusinessService } from '../aservice/business.service';
 import { AuthService } from '../aservice/auth.service';
+import { SideBarComponent } from '../side-bar/side-bar.component';
 declare var bootstrap: any;
 
 interface BookingRequest {
@@ -39,7 +40,7 @@ interface UnReadNotifications {
 @Component({
   selector: 'app-businessnotification',
   standalone: true,
-  imports: [RouterOutlet, NgFor, CommonModule],
+  imports: [RouterOutlet, NgFor, CommonModule,SideBarComponent],
   templateUrl: './businessnotification.component.html',
   styleUrl: './businessnotification.component.css',
 })

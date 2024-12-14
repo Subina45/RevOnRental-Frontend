@@ -284,7 +284,7 @@ export class AuthService {
     };
     return this.http
       .get(`${this.apiUrl}/Notifications/notifications/unread-count`, {
-        params: { userId },
+        params: { id:userId },
         headers,
       })
       .pipe(

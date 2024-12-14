@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, NgZone, OnInit } from '@angular/core';
 
 import { AuthService } from '../aservice/auth.service';
 import { HttpClient } from '@angular/common/http';
@@ -28,8 +28,7 @@ interface UnReadNotifications {
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-  unReadNotifications: UnReadNotifications = { unreadCount: 0 };
-  unreadNotifications: number = 0;
+  unreadNotifications = 0;
   showProfileModal = false; // Initially hidden
   showEditProfileModal = false; // For edit profile modal
   menuOpen: boolean = false;
@@ -47,10 +46,14 @@ export class NavbarComponent {
     private router: Router,
     private authservice: AuthService,
     private vehicleservice: VehicleService,
-    private signalRService: SignalrService
+    private signalRService: SignalrService,
+        private ngZone: NgZone,
+        private cdr: ChangeDetectorRef
+    
   ) {
     if(this.authservice.isLoggedIn()){
-      this.currentRole=this.authservice.getLoggedInRole();
+      this.currentRole=this.authservice.getLoggedInRole()?.toLowerCase();
+      console.log(this.currentRole);
       if(this.currentRole=='user'){
         this.currentUserId=this.authservice.getUserId();
       }else{
@@ -58,6 +61,10 @@ export class NavbarComponent {
       }
       this.signalRServiceListners();
       this.signalRService.onNotificationCreateSignal();
+      if(this.currentRole=='user'){
+        this.getNotificationCount(this.currentUserId);
+      }
+      
     }
   }
   isBusinessUser: boolean = false;
@@ -70,26 +77,21 @@ export class NavbarComponent {
         const decodedToken: any = this.authservice.decodeToken();
         this.isLoggedIn = true;
         this.isBusinessUser = decodedToken.role === 'Business';
+        console.log(`isBusinessUser=${this.isBusinessUser}`);
         this.fetchUserProfile(decodedToken.id); // Fetch profile if logged in
         const userId = this.authservice.getUserId();
-        // Fetch unread count
-        this.authservice.fetchUnReadNotificationsCount(userId).subscribe({
-          next: (response: UnReadNotifications) => {
-            this.unreadNotifications = response.unreadCount;
-            console.log('Unread notifications:', this.unreadNotifications);
-          },
-          error: (error) => {
-            console.error('Error fetching unread count:', error);
-          },
-        });
+        
+      
       }
     });
   }
 
   getNotificationCount(id){
     this.authservice.fetchUnReadNotificationsCount(id).subscribe({
-      next: (response: UnReadNotifications) => {
+      next: (response: any) => {
         this.unreadNotifications = response.unreadCount;
+
+
         console.log('Unread notifications:', this.unreadNotifications);
       },
       error: (error) => {
@@ -107,12 +109,9 @@ export class NavbarComponent {
 
   private signalRServiceListners() {
     this.signalRService.onCreateNotification$.subscribe((respo: any) => {
-        if (respo) {          
+        if (respo) {   
           if(this.currentRole=='user'){
             this.getNotificationCount(this.currentUserId);
-          }
-          if(this.currentRole=='business'){
-            this.getNotificationCount(this.currentBusinessId);
           }
         }
     });

@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../aservice/auth.service';
 import { BusinessService } from '../aservice/business.service';
+import { SignalrService } from '../core-services/signalr.services';
+import { SideBarComponent } from '../side-bar/side-bar.component';
 
 export interface Booking {
   id: number;
@@ -27,7 +29,7 @@ interface UnReadNotifications {
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [RouterLink, CommonModule, FormsModule],
+  imports: [RouterLink, CommonModule, FormsModule,SideBarComponent],
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.css'],
 })
@@ -35,12 +37,18 @@ export class BookingComponent {
   unReadNotifications: UnReadNotifications = { unreadCount: 0 };
   unreadNotifications: number = 0;
   bookings: Booking[] = [];
-
+  currentBusinessId:any=null;
+  currentRole:any=null;
   constructor(
     private authService: AuthService,
     private businessService: BusinessService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authservice: AuthService,
+    private signalRService: SignalrService,
+
+  ) {
+   
+  }
 
   ngOnInit(): void {
     const businessId = this.authService.getBusinessId();
@@ -50,15 +58,15 @@ export class BookingComponent {
   }
 
   private loadNotificationsAndBookings(businessId) {
-    // Load unread notifications
-    this.businessService.fetchUnReadNotificationsCount(businessId).subscribe({
-      next: (response: UnReadNotifications) => {
-        this.unreadNotifications = response.unreadCount;
-      },
-      error: (error) => {
-        console.error('Error fetching unread count:', error);
-      },
-    });
+    // // Load unread notifications
+    // this.businessService.fetchUnReadNotificationsCount(businessId).subscribe({
+    //   next: (response: UnReadNotifications) => {
+    //     this.unreadNotifications = response.unreadCount;
+    //   },
+    //   error: (error) => {
+    //     console.error('Error fetching unread count:', error);
+    //   },
+    // });
 
     // Load bookings
     this.businessService.getBusinessBookings(businessId).subscribe({
